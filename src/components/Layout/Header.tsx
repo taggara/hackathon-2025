@@ -1,0 +1,69 @@
+import React from 'react';
+import { Menu, X, Sun, Moon, Bell, Search } from 'lucide-react';
+
+interface HeaderProps {
+  toggleSidebar: () => void;
+  toggleDarkMode: () => void;
+  darkMode: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode }) => {
+  return (
+    <header className={`py-4 px-6 flex items-center justify-between shadow-sm z-10 transition-colors
+      ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
+      <div className="flex items-center">
+        <button
+          onClick={toggleSidebar}
+          className={`p-2 mr-4 rounded-full hover:bg-opacity-10 transition-colors
+            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
+          aria-label="Toggle sidebar"
+        >
+          <Menu size={24} />
+        </button>
+        <div className="flex items-center">
+          <span className="font-bold text-lg md:text-xl">AI Assistant Dashboard</span>
+        </div>
+      </div>
+
+      <div className="hidden md:flex items-center relative flex-1 max-w-md mx-8">
+        <div className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none
+          ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+          <Search size={18} />
+        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          className={`block w-full pl-10 pr-3 py-2 rounded-lg border transition-colors
+            ${darkMode 
+              ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500' 
+              : 'bg-gray-100 border-gray-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+            } focus:outline-none focus:ring-1 focus:ring-blue-500`}
+        />
+      </div>
+
+      <div className="flex items-center">
+        <button
+          onClick={toggleDarkMode}
+          className={`p-2 rounded-full hover:bg-opacity-10 mr-2 transition-colors
+            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
+          aria-label="Toggle dark mode"
+        >
+          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+        <button
+          className={`p-2 rounded-full hover:bg-opacity-10 mr-2 transition-colors relative
+            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
+          aria-label="Notifications"
+        >
+          <Bell size={20} />
+          <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+        </button>
+        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+          <span className="text-sm font-semibold">JD</span>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
