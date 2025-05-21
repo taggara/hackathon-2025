@@ -9,7 +9,7 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleDarkMode = () => setDarkMode(!darkMode);
