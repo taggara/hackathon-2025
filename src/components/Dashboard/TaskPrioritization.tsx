@@ -50,12 +50,12 @@ const TaskPrioritization: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="space-y-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-20 bg-gray-300 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
         </div>
@@ -64,11 +64,11 @@ const TaskPrioritization: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-semibold dark:text-white">Prioritized Tasks</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Prioritized Tasks</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             AI-suggested priority based on due dates and importance
           </p>
         </div>
@@ -89,7 +89,7 @@ const TaskPrioritization: React.FC = () => {
         {tasks.map(task => (
           <div 
             key={task.id}
-            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-600"
           >
             <div className="flex items-start justify-between">
               <div className="flex items-start space-x-3">
@@ -103,8 +103,8 @@ const TaskPrioritization: React.FC = () => {
                   )}
                 </div>
                 <div>
-                  <h3 className="font-medium dark:text-white">{task.title}</h3>
-                  <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  <h3 className="font-medium text-gray-900 dark:text-white">{task.title}</h3>
+                  <div className="flex items-center mt-1 text-sm text-gray-600 dark:text-gray-400">
                     <span>{task.dueDateTime ? new Date(task.dueDateTime).toLocaleDateString() : 'No due date'}</span>
                   </div>
                 </div>
@@ -121,14 +121,14 @@ const TaskPrioritization: React.FC = () => {
           </div>
         ))}
         {tasks.length === 0 && (
-          <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+          <div className="text-center text-gray-600 dark:text-gray-400 py-4">
             No tasks found
           </div>
         )}
       </div>
       
       {isCollapsed && (
-        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+        <div className="text-center text-gray-600 dark:text-gray-400 py-4">
           Content collapsed. Click the arrow to expand.
         </div>
       )}
