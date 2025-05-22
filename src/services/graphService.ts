@@ -2,50 +2,79 @@ import { Client } from "@microsoft/microsoft-graph-client";
 import { AuthCodeMSALBrowserAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
 import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
 import { loginRequest } from "./msalConfig";
-import { AuthLogger } from "./authLogger";
 
 export class GraphService {
   private static client: Client;
 
   static async initializeGraphClient(msalInstance: PublicClientApplication) {
-    try {
-      AuthLogger.log(2, "Initializing Graph client");
-      
-      const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(msalInstance, {
-        account: msalInstance.getAllAccounts()[0],
-        scopes: [...loginRequest.scopes, "user_impersonation"],
-        interactionType: 'popup'
-      });
+    const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(msalInstance, {
+      account: msalInstance.getAllAccounts()[0],
+      scopes: loginRequest.scopes,
+      interactionType: 'popup'
+    });
 
-      this.client = Client.initWithMiddleware({
-        authProvider
-      });
-
-      AuthLogger.log(2, "Graph client initialized successfully");
-    } catch (error) {
-      AuthLogger.log(0, `Graph client initialization failed: ${error instanceof Error ? error.message : "Unknown error"}`);
-      throw error;
-    }
+    this.client = Client.initWithMiddleware({
+      authProvider
+    });
   }
 
   static async getUserDetails() {
     try {
-      AuthLogger.log(2, "Fetching user details from Graph API");
-      
-      const user = await this.client.api('/me').get();
-      const groups = await this.client.api('/me/memberOf').get();
-      
-      AuthLogger.log(2, "User details fetched successfully");
-      AuthLogger.log(3, `User principal name: ${user.userPrincipalName}`);
-      AuthLogger.log(3, `Groups count: ${groups.value.length}`);
-      
-      return { ...user, groups: groups.value };
+      return await this.client.api('/me').get();
     } catch (error) {
       if (error instanceof InteractionRequiredAuthError) {
-        AuthLogger.log(1, "Authentication token expired or invalid, requiring new interaction");
         throw error;
       }
-      AuthLogger.log(0, `Error getting user details: ${error instanceof Error ? error.message : "Unknown error"}`);
+      console.error('Error getting user details:', error);
+      throw error;
+    }
+  }
+
+  static async getCalendarEvents() {
+    try {
+      const events = await this.client
+        .api('/me/calendar/events')
+        .select('subject,start,end,attendees')
+        .orderby('start/dateTime')
+        .top(10)
+        .get();
+      return events.value;
+    } catch (error) {
+      console.error('Error getting calendar events:', error);
+      throw error;
+    }
+  }
+
+  static async getTasks() {
+    try {
+      const tasks = await this.client
+        .api('/me/todo/lists')
+        .get();
+      const defaultList = tasks.value[0];
+      if (defaultList) {
+        const tasksInList = await this.client
+          .api(`/me/todo/lists/${defaultList.id}/tasks`)
+          .get();
+        return tasksInList.value;
+      }
+      return [];
+    } catch (error) {
+      console.error('Error getting tasks:', error);
+      throw error;
+    }
+  }
+
+  static async getRecentEmails() {
+    try {
+      const messages = await this.client
+        .api('/me/messages')
+        .select('subject,receivedDateTime,from,isRead')
+        .orderby('receivedDateTime desc')
+        .top(5)
+        .get();
+      return messages.value;
+    } catch (error) {
+      console.error('Error getting emails:', error);
       throw error;
     }
   }
