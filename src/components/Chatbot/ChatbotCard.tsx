@@ -26,6 +26,8 @@ const ChatbotCard: React.FC = () => {
   const handleSendMessage = async () => {
     if (input.trim() === '' || isLoading) return;
     
+    console.log('Sending message:', input);
+    
     // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
@@ -39,6 +41,9 @@ const ChatbotCard: React.FC = () => {
     setIsLoading(true);
     
     try {
+      console.log('Making API request to AI endpoint...');
+      const startTime = performance.now();
+      
       const response = await fetch('https://dabs2bck.app.n8n.cloud/webhook/69aff619-cd62-487a-ab61-6829ac81b01c', {
         method: 'POST',
         headers: {
@@ -47,11 +52,20 @@ const ChatbotCard: React.FC = () => {
         body: JSON.stringify({ message: input }),
       });
 
+      const endTime = performance.now();
+      console.log(`API request took ${Math.round(endTime - startTime)}ms`);
+
       if (!response.ok) {
+        console.error('API request failed:', {
+          status: response.status,
+          statusText: response.statusText
+        });
         throw new Error('Failed to get response from AI');
       }
 
+      console.log('Received response from AI endpoint');
       const data = await response.json();
+      console.log('Parsed response data:', data);
       
       const aiMessage: Message = {
         id: messages.length + 2,
@@ -62,7 +76,7 @@ const ChatbotCard: React.FC = () => {
       
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error('Error getting AI response:', error);
+      console.error('Error in AI communication:', error);
       const errorMessage: Message = {
         id: messages.length + 2,
         content: "I apologize, but I'm having trouble connecting to my backend service. Please try again later.",
@@ -71,6 +85,7 @@ const ChatbotCard: React.FC = () => {
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
+      console.log('AI request completed');
       setIsLoading(false);
     }
   };
