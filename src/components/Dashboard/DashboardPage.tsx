@@ -16,10 +16,10 @@ const DashboardPage: React.FC = () => {
         </div>
       </div>
       <div className="lg:col-span-1 space-y-6">
-        <div className="h-[400px]">
+        <div className="h-[500px]">
           <ChatbotCard />
         </div>
-        <div className="h-[300px] overflow-hidden">
+        <div className="h-[200px] overflow-hidden">
           <RecentMessages />
         </div>
       </div>
