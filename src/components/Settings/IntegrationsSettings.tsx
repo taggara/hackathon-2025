@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slack, Mail, Cloud, Video, Windows } from 'lucide-react';
+import { Slack, Mail, Cloud, Video, AppWindow as Windows } from 'lucide-react';
 
 interface IntegrationCardProps {
   title: string;
