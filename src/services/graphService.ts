@@ -39,7 +39,7 @@ export class GraphService {
     try {
       const user = await this.client
         .api('/me')
-        .select('displayName,mail,jobTitle,companyName,id,userPrincipalName')
+        .select('displayName,mail,jobTitle,department,id,userPrincipalName')
         .get();
       
       console.log('User details retrieved successfully');
@@ -55,7 +55,7 @@ export class GraphService {
         displayName: "Alissa Clark",
         mail: "alissa.k.clark@gmail.com",
         jobTitle: "Senior IT Manager",
-        companyName: "O+O OmniSales Commercial",
+        department: "O+O OmniSales Commercial",
         id: "OAID00084781"
       };
     }
