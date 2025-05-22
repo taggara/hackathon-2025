@@ -51,11 +51,11 @@ export class GraphService {
       // Fallback to mock data if there's an error
       console.warn('Falling back to mock user data');
       return {
-        displayName: "Sarah Chen",
-        mail: "sarah.chen@salesforce.com",
-        jobTitle: "Senior Product Manager, SalesCloud",
-        department: "Product Management",
-        id: "12345"
+        displayName: "Alissa Clark",
+        mail: "alissa.k.clark@gmail.com,
+        jobTitle: "Senior IT Manager",
+        department: "O+O OmniSales Commercialt",
+        id: "OAID00084781"
       };
     }
   }
