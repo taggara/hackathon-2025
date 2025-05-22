@@ -13,7 +13,7 @@ const ChatbotCard: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      content: "Hello! I'm your AI assistant powered by Claude-Sonnet 3.5. How can I help you today?",
+      content: "Hello! I'm your AI assistant powered by OpenAI. How can I help you today?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -61,7 +61,7 @@ const ChatbotCard: React.FC = () => {
       
       const aiMessage: Message = {
         id: messages.length + 2,
-        content: data.response || data.message || 'I apologize, but I encountered an issue processing your request.',
+        content: data.output || data.message || 'I apologize, but I encountered an issue processing your request.',
         isUser: false,
         timestamp: new Date(),
       };
