@@ -124,7 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <div className="flex flex-col">
                   <span className="font-medium text-white">{userDetails.displayName}</span>
                   <span className="text-sm text-gray-400">
-                    {userDetails.mail || userDetails.userPrincipalName}
+                    {userDetails.mail}
                   </span>
                 </div>
               </div>
