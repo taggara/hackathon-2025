@@ -7,15 +7,15 @@ const LoginButton: React.FC = () => {
   const { instance } = useMsal();
 
   const handleLogin = async () => {
-    console.log('🔑 Initiating login process...');
+    console.log('Initiating login process...');
     try {
-      console.log('📝 Login request configuration:', {
+      console.log('Login request configuration:', {
         scopes: loginRequest.scopes,
         prompt: loginRequest.prompt
       });
       
       const response = await instance.loginPopup(loginRequest);
-      console.log('✅ Login successful:', {
+      console.log('Login successful:', {
         account: {
           username: response.account.username,
           environment: response.account.environment,
@@ -25,7 +25,7 @@ const LoginButton: React.FC = () => {
         idTokenClaims: response.idTokenClaims
       });
     } catch (error) {
-      console.error('❌ Login failed:', error);
+      console.error('Login failed:', error);
       if (error instanceof Error) {
         console.error('Error details:', {
           name: error.name,

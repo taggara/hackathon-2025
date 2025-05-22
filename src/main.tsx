@@ -7,15 +7,15 @@ import { GraphService } from './services/graphService';
 import App from './App.tsx';
 import './index.css';
 
-console.log('🔄 Initializing MSAL application...');
+console.log('Initializing MSAL application...');
 const msalInstance = new PublicClientApplication(msalConfig);
 
 // Initialize Graph client after MSAL
 if (msalInstance.getAllAccounts().length > 0) {
-  console.log('👤 Found existing account, initializing Graph client...');
+  console.log('Found existing account, initializing Graph client...');
   GraphService.initializeGraphClient(msalInstance);
 } else {
-  console.log('ℹ️ No existing accounts found');
+  console.log('No existing accounts found');
 }
 
 createRoot(document.getElementById('root')!).render(
