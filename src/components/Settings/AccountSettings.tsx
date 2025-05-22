@@ -49,7 +49,7 @@ const AccountSettings: React.FC = () => {
               <Building2 className="text-blue-500" size={20} />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Department</p>
-                <p className="font-medium dark:text-white">Product Management</p>
+                <p className="font-medium dark:text-white">O+O OmniSales Commerical</p>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ const AccountSettings: React.FC = () => {
               <Briefcase className="text-blue-500" size={20} />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Job Title</p>
-                <p className="font-medium dark:text-white">Senior Product Manager</p>
+                <p className="font-medium dark:text-white">Senior IT Manager</p>
               </div>
             </div>
           </div>
