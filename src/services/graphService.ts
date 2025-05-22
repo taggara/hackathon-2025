@@ -34,14 +34,30 @@ export class GraphService {
   }
 
   static async getUserDetails() {
-    // For demo purposes, return mock user data
-    return {
-      displayName: "Sarah Chen",
-      mail: "sarah.chen@salesforce.com",
-      jobTitle: "Senior Product Manager, SalesCloud",
-      department: "Product Management",
-      id: "12345"
-    };
+    console.log('Fetching user details from Graph API...');
+    try {
+      const user = await this.client
+        .api('/me')
+        .select('displayName,mail,jobTitle,department,id,userPrincipalName')
+        .get();
+      
+      console.log('User details retrieved successfully');
+      return user;
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      if (error instanceof InteractionRequiredAuthError) {
+        throw error;
+      }
+      // Fallback to mock data if there's an error
+      console.warn('Falling back to mock user data');
+      return {
+        displayName: "Sarah Chen",
+        mail: "sarah.chen@salesforce.com",
+        jobTitle: "Senior Product Manager, SalesCloud",
+        department: "Product Management",
+        id: "12345"
+      };
+    }
   }
 
   static async getCalendarEvents() {
