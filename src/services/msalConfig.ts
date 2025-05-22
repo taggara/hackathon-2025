@@ -47,7 +47,8 @@ export const loginRequest: PopupRequest = {
     "Calendars.Read",
     "Mail.Read",
     "Tasks.Read",
-    "Tasks.ReadWrite"
+    "Tasks.ReadWrite",
+    "Tasks.ReadWrite.Shared"
   ],
   prompt: "select_account"
 };
