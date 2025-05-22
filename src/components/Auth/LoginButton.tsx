@@ -7,7 +7,18 @@ const LoginButton: React.FC = () => {
   const { instance } = useMsal();
 
   const handleLogin = () => {
-    instance.loginPopup(loginRequest).catch(e => {
+    instance.loginPopup({
+      ...loginRequest,
+      extraScopesToConsent: ["user_impersonation"],
+      claims: {
+        id_token: {
+          groups: { essential: true }
+        },
+        access_token: {
+          groups: { essential: true }
+        }
+      }
+    }).catch(e => {
       console.error("Login failed:", e);
     });
   };
@@ -18,7 +29,7 @@ const LoginButton: React.FC = () => {
       className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
     >
       <LogIn size={20} />
-      <span>Sign in with Microsoft</span>
+      <span>Sign in</span>
     </button>
   );
 };
