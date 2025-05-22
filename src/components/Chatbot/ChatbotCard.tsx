@@ -70,8 +70,7 @@ const ChatbotCard: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm flex flex-col transition-all
-      ${isCollapsed ? 'h-[200px]' : 'h-[600px] lg:h-[calc(100vh-160px)]'}`}>
+    <div className={`bg-white dark:bg-gray-800/50 rounded-xl shadow-sm flex flex-col h-full transition-all`}>
       <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
         <div>
           <h2 className="font-semibold dark:text-white">AI Assistant</h2>
