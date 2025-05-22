@@ -55,7 +55,7 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Microsoft Teams"
           description="Connect your Microsoft Teams account"
-          icon={<MessageSquareMore size={24} style={{ color: '#4B53BC' }} />}
+          icon={<Users size={24} style={{ color: '#4B53BC' }} />}
           connected={true}
           onClick={() => handleConnect('Microsoft')}
         />
