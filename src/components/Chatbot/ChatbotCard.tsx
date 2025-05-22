@@ -13,7 +13,7 @@ const ChatbotCard: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      content: "Hello! I'm your AI assistant powered by Claude-Sonnet 3.5. How can I help you today?",
+      content: "Hello! I'm your AI assistant powered by OpenAI. How can I help you today?",
       isUser: false,
       timestamp: new Date(),
     },
