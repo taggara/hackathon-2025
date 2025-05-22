@@ -1,5 +1,7 @@
 import React from 'react';
-import { Menu, X, Sun, Moon, Bell, Search } from 'lucide-react';
+import { Menu, Sun, Moon, Bell, Search } from 'lucide-react';
+import { useMsal } from "@azure/msal-react";
+import LoginButton from '../Auth/LoginButton';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -8,6 +10,9 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode }) => {
+  const { accounts } = useMsal();
+  const isAuthenticated = accounts.length > 0;
+
   return (
     <header className={`py-4 px-6 flex items-center justify-between shadow-sm z-10 transition-colors
       ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
@@ -50,17 +55,23 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
         >
           {darkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
-        <button
-          className={`p-2 rounded-full hover:bg-opacity-10 mr-2 transition-colors relative
-            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
-          aria-label="Notifications"
-        >
-          <Bell size={20} />
-          <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
-        </button>
-        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-          <span className="text-sm font-semibold">JD</span>
-        </div>
+        {isAuthenticated ? (
+          <>
+            <button
+              className={`p-2 rounded-full hover:bg-opacity-10 mr-2 transition-colors relative
+                ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
+              aria-label="Notifications"
+            >
+              <Bell size={20} />
+              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+            </button>
+            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+              <span className="text-sm font-semibold">{accounts[0]?.username?.charAt(0).toUpperCase()}</span>
+            </div>
+          </>
+        ) : (
+          <LoginButton />
+        )}
       </div>
     </header>
   );
