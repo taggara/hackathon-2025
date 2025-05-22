@@ -15,13 +15,9 @@ const DashboardPage: React.FC = () => {
           <UpcomingMeetings />
         </div>
       </div>
-      <div className="lg:col-span-1 flex flex-col space-y-6">
-        <div className="flex-[0.7]">
-          <ChatbotCard />
-        </div>
-        <div className="flex-[0.3]">
-          <RecentMessages />
-        </div>
+      <div className="lg:col-span-1 space-y-6">
+        <ChatbotCard />
+        <RecentMessages />
       </div>
     </div>
   );

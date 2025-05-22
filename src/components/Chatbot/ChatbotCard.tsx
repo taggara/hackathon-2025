@@ -28,7 +28,6 @@ const ChatbotCard: React.FC = () => {
     
     console.log('Sending message:', input);
     
-    // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
       content: input,
@@ -102,11 +101,11 @@ const ChatbotCard: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className={`bg-white dark:bg-gray-800/50 rounded-xl shadow-sm flex flex-col h-full transition-all`}>
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm flex flex-col">
       <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
         <div>
           <h2 className="font-semibold dark:text-white">AI Assistant</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Powered by Claude-Sonnet 3.5</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Powered by OpenAI</p>
         </div>
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -177,7 +176,7 @@ const ChatbotCard: React.FC = () => {
       </div>
       
       {isCollapsed && (
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center p-4">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
             Chat is minimized. Click the arrow to expand.
           </p>
