@@ -1,0 +1,30 @@
+import { Configuration, PopupRequest } from "@azure/msal-browser";
+
+export const msalConfig: Configuration = {
+  auth: {
+    clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
+    authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
+    redirectUri: window.location.origin,
+  },
+  cache: {
+    cacheLocation: "sessionStorage",
+    storeAuthStateInCookie: false,
+  }
+};
+
+export const loginRequest: PopupRequest = {
+  scopes: [
+    "User.Read",
+    "Calendars.Read",
+    "Mail.Read",
+    "Chat.Read",
+    "presence.read"
+  ]
+};
+
+export const graphConfig = {
+  graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
+  graphMailEndpoint: "https://graph.microsoft.com/v1.0/me/messages",
+  graphEventsEndpoint: "https://graph.microsoft.com/v1.0/me/events",
+  graphChatsEndpoint: "https://graph.microsoft.com/v1.0/me/chats"
+};
