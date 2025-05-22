@@ -14,10 +14,14 @@ const DashboardPage: React.FC = () => {
           <TasksOverview />
           <UpcomingMeetings />
         </div>
-        <RecentMessages />
       </div>
-      <div className="lg:col-span-1">
-        <ChatbotCard />
+      <div className="lg:col-span-1 space-y-6">
+        <div className="h-[500px]">
+          <ChatbotCard />
+        </div>
+        <div className="h-[200px] overflow-hidden">
+          <RecentMessages />
+        </div>
       </div>
     </div>
   );

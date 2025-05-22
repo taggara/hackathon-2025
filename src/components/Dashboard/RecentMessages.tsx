@@ -1,81 +1,118 @@
-import React from 'react';
-import { MessageSquare } from 'lucide-react';
-
-const messages = [
-  {
-    id: 1,
-    sender: 'Sarah Johnson',
-    avatar: 'SJ',
-    message: 'Can you review the latest design mockups for the client presentation?',
-    time: '30 minutes ago',
-    unread: true,
-  },
-  {
-    id: 2,
-    sender: 'Michael Chen',
-    avatar: 'MC',
-    message: 'The project timeline has been updated. Let me know your thoughts.',
-    time: '1 hour ago',
-    unread: false,
-  },
-  {
-    id: 3,
-    sender: 'Team Announcements',
-    avatar: 'TA',
-    message: 'Company all-hands meeting this Friday at 4 PM. Please attend.',
-    time: '2 hours ago',
-    unread: false,
-  },
-];
+import React, { useState, useEffect } from 'react';
+import { MessageSquare, ChevronUp, ChevronDown, AppWindow as Windows, Mail as Google, Slack } from 'lucide-react';
+import { GraphService } from '../../services/graphService';
 
 const RecentMessages: React.FC = () => {
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center">
-          <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
-          <div className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-            1
+  const [messages, setMessages] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const emails = await GraphService.getRecentEmails();
+        setMessages(emails);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, []);
+
+  const getSourceIcon = (source: string) => {
+    switch (source) {
+      case 'microsoft':
+        return <Windows size={16} className="text-blue-500" />;
+      case 'google':
+        return <Google size={16} className="text-red-500" />;
+      case 'slack':
+        return <Slack size={16} className="text-purple-500" />;
+      default:
+        return <Windows size={16} className="text-blue-500" />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+        <div className="animate-pulse space-y-4">
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="space-y-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            ))}
           </div>
         </div>
-        <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
-          Open Teams
-        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
+        <div className="flex items-center space-x-2">
+          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
+            View All
+          </button>
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+          </button>
+        </div>
       </div>
       
-      <div className="space-y-4">
-        {messages.map(msg => (
+      <div className={`space-y-4 transition-all ${isCollapsed ? 'hidden' : ''}`}>
+        {messages.map(message => (
           <div 
-            key={msg.id}
-            className={`p-4 rounded-lg transition-colors ${
-              msg.unread 
-                ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800' 
-                : 'border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
+            key={message.id}
+            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
           >
-            <div className="flex">
-              <div className={`h-10 w-10 rounded-full flex items-center justify-center text-white font-medium ${
-                msg.unread ? 'bg-blue-500' : 'bg-gray-500 dark:bg-gray-600'
-              }`}>
-                {msg.avatar}
-              </div>
-              <div className="ml-3 flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-medium dark:text-white">{msg.sender}</h3>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{msg.time}</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {getSourceIcon(message.source || 'microsoft')}
+                <div>
+                  <h3 className="font-medium dark:text-white">{message.subject}</h3>
+                  <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <span>{message.from.emailAddress.name}</span>
+                    <span className="mx-2">•</span>
+                    <span>
+                      {new Date(message.receivedDateTime).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{msg.message}</p>
               </div>
-            </div>
-            <div className="mt-3 flex justify-end">
-              <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium flex items-center transition-colors">
-                <MessageSquare size={14} className="mr-1" />
-                Reply
-              </button>
+              <div className="flex items-center space-x-2">
+                {!message.isRead && (
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                )}
+                <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md text-gray-500 dark:text-gray-400 transition-colors">
+                  <MessageSquare size={16} />
+                </button>
+              </div>
             </div>
           </div>
         ))}
+        {messages.length === 0 && (
+          <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+            No recent messages
+          </div>
+        )}
       </div>
+      
+      {isCollapsed && (
+        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+          Content collapsed. Click the arrow to expand.
+        </div>
+      )}
     </div>
   );
 };

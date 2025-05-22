@@ -12,6 +12,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode }) => {
   const { accounts } = useMsal();
   const isAuthenticated = accounts.length > 0;
+  const userInitial = isAuthenticated ? accounts[0]?.username?.charAt(0).toUpperCase() : '';
 
   return (
     <header className={`py-4 px-6 flex items-center justify-between shadow-sm z-10 transition-colors
@@ -25,8 +26,13 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
         >
           <Menu size={24} />
         </button>
-        <div className="flex items-center">
-          <span className="font-bold text-lg md:text-xl">AI Alchisit Dashboard</span>
+        <div className="flex items-center space-x-3">
+          <img 
+            src="https://i.imgur.com/9eYIz0m.png" 
+            alt="AI Alchemist"
+            className="h-8 w-8"
+          />
+          <span className="font-bold text-lg md:text-xl">AI Alchemist</span>
         </div>
       </div>
 
@@ -46,29 +52,30 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
         />
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center space-x-4">
         <button
           onClick={toggleDarkMode}
-          className={`p-2 rounded-full hover:bg-opacity-10 mr-2 transition-colors
+          className={`p-2 rounded-full hover:bg-opacity-10 transition-colors
             ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
           aria-label="Toggle dark mode"
         >
           {darkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
+        
         {isAuthenticated ? (
-          <>
+          <div className="flex items-center space-x-4">
             <button
-              className={`p-2 rounded-full hover:bg-opacity-10 mr-2 transition-colors relative
+              className={`p-2 rounded-full hover:bg-opacity-10 transition-colors relative
                 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
               aria-label="Notifications"
             >
               <Bell size={20} />
               <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
             </button>
-            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-              <span className="text-sm font-semibold">{accounts[0]?.username?.charAt(0).toUpperCase()}</span>
+            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white cursor-pointer">
+              <span className="text-sm font-semibold">{userInitial}</span>
             </div>
-          </>
+          </div>
         ) : (
           <LoginButton />
         )}

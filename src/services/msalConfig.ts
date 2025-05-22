@@ -1,16 +1,15 @@
 import { Configuration, PopupRequest } from "@azure/msal-browser";
 
-// MSAL configuration object
 export const msalConfig: Configuration = {
   auth: {
     clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
     authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
-    redirectUri: `${window.location.origin}/auth`,
+    redirectUri: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
     navigateToLoginRequestUrl: true
   },
   cache: {
-    cacheLocation: "sessionStorage",
+    cacheLocation: "localStorage",
     storeAuthStateInCookie: false
   },
   system: {
@@ -46,23 +45,19 @@ export const msalConfig: Configuration = {
   }
 };
 
-// Add here scopes for id token to be used at MS Identity Platform endpoints.
 export const loginRequest: PopupRequest = {
   scopes: [
-    "user_impersonation",
     "User.Read",
     "Calendars.Read",
     "Mail.Read",
-    "Chat.Read",
-    "Presence.read"
+    "Tasks.Read"
   ],
   prompt: "select_account"
 };
 
-// Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {
   graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
   graphMailEndpoint: "https://graph.microsoft.com/v1.0/me/messages",
   graphEventsEndpoint: "https://graph.microsoft.com/v1.0/me/events",
-  graphChatsEndpoint: "https://graph.microsoft.com/v1.0/me/chats"
+  graphTasksEndpoint: "https://graph.microsoft.com/v1.0/me/todo/lists/tasks/tasks"
 };
