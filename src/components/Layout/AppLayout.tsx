@@ -10,7 +10,7 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, onNavigate }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleDarkMode = () => setDarkMode(!darkMode);
@@ -39,7 +39,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onNavigate }) => {
           onNavigate={onNavigate}
         />
         <main className={`flex-1 overflow-y-auto transition-all duration-300 p-6 
-          ${darkMode ? 'bg-gray-800 text-gray-100' : 'bg-gray-100 text-gray-800'}`}>
+          ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
           {children}
         </main>
       </div>
