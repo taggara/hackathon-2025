@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, ChevronUp, ChevronDown } from 'lucide-react';
 import { GraphService } from '../../services/graphService';
 
 const RecentMessages: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -49,12 +50,20 @@ const RecentMessages: React.FC = () => {
             </div>
           )}
         </div>
-        <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
-          Open Outlook
-        </button>
+        <div className="flex items-center space-x-2">
+          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
+            Open Outlook
+          </button>
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+          </button>
+        </div>
       </div>
       
-      <div className="space-y-4">
+      <div className={`space-y-4 transition-all ${isCollapsed ? 'hidden' : ''}`}>
         {messages.map(msg => (
           <div 
             key={msg.id}
@@ -97,6 +106,12 @@ const RecentMessages: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {isCollapsed && (
+        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+          Content collapsed. Click the arrow to expand.
+        </div>
+      )}
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Video, Users, Clock } from 'lucide-react';
+import { Video, Users, Clock, ChevronUp, ChevronDown } from 'lucide-react';
 import { GraphService } from '../../services/graphService';
 
 const UpcomingMeetings: React.FC = () => {
   const [meetings, setMeetings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -40,12 +41,20 @@ const UpcomingMeetings: React.FC = () => {
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold dark:text-white">Today's Meetings</h2>
-        <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
-          View Calendar
-        </button>
+        <div className="flex items-center space-x-2">
+          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
+            View Calendar
+          </button>
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+          </button>
+        </div>
       </div>
       
-      <div className="space-y-4">
+      <div className={`space-y-4 transition-all ${isCollapsed ? 'hidden' : ''}`}>
         {meetings.map(meeting => (
           <div 
             key={meeting.id}
@@ -85,6 +94,12 @@ const UpcomingMeetings: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {isCollapsed && (
+        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+          Content collapsed. Click the arrow to expand.
+        </div>
+      )}
     </div>
   );
 };

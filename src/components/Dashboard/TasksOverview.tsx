@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, Clock, AlertTriangle, XCircle } from 'lucide-react';
+import { CheckCircle, Clock, AlertTriangle, XCircle, ChevronUp, ChevronDown } from 'lucide-react';
 import { GraphService } from '../../services/graphService';
 
 const TasksOverview: React.FC = () => {
@@ -11,6 +11,7 @@ const TasksOverview: React.FC = () => {
     totalTasks: 0
   });
   const [loading, setLoading] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const fetchTaskStats = async () => {
@@ -80,38 +81,54 @@ const TasksOverview: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
-      <h2 className="text-xl font-semibold mb-4 dark:text-white">Tasks Overview</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold dark:text-white">Tasks Overview</h2>
+        <button 
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+        </button>
+      </div>
       
-      <div className="grid grid-cols-2 gap-4">
-        {taskStatItems.map((stat, index) => (
-          <div 
-            key={index} 
-            className="border dark:border-gray-700 rounded-lg p-4 transition-all hover:shadow-md"
-          >
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700">
-                {stat.icon}
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
-                <p className="text-2xl font-semibold mt-1 dark:text-white">{stat.count}</p>
+      <div className={`transition-all ${isCollapsed ? 'hidden' : ''}`}>
+        <div className="grid grid-cols-2 gap-4">
+          {taskStatItems.map((stat, index) => (
+            <div 
+              key={index} 
+              className="border dark:border-gray-700 rounded-lg p-4 transition-all hover:shadow-md"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700">
+                  {stat.icon}
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
+                  <p className="text-2xl font-semibold mt-1 dark:text-white">{stat.count}</p>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+        
+        <div className="mt-6">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-1">
+            <div 
+              className="bg-blue-600 h-2.5 rounded-full" 
+              style={{ width: `${completionPercentage}%` }}
+            ></div>
           </div>
-        ))}
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {completionPercentage}% of tasks completed
+          </p>
+        </div>
       </div>
       
-      <div className="mt-6">
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-1">
-          <div 
-            className="bg-blue-600 h-2.5 rounded-full" 
-            style={{ width: `${completionPercentage}%` }}
-          ></div>
+      {isCollapsed && (
+        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+          Content collapsed. Click the arrow to expand.
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          {completionPercentage}% of tasks completed
-        </p>
-      </div>
+      )}
     </div>
   );
 };
