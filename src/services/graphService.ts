@@ -34,81 +34,128 @@ export class GraphService {
   }
 
   static async getUserDetails() {
-    console.log('Fetching user details...');
-    try {
-      const user = await this.client.api('/me').get();
-      console.log('User details retrieved:', {
-        displayName: user.displayName,
-        email: user.mail,
-        id: user.id
-      });
-      return user;
-    } catch (error) {
-      if (error instanceof InteractionRequiredAuthError) {
-        console.error('Authentication required:', error);
-        throw error;
-      }
-      console.error('Error getting user details:', error);
-      throw error;
-    }
+    // For demo purposes, return mock user data
+    return {
+      displayName: "Sarah Chen",
+      mail: "sarah.chen@salesforce.com",
+      jobTitle: "Senior Product Manager, SalesCloud",
+      department: "Product Management",
+      id: "12345"
+    };
   }
 
   static async getCalendarEvents() {
-    console.log('Fetching calendar events...');
-    try {
-      const events = await this.client
-        .api('/me/calendar/events')
-        .select('subject,start,end,attendees')
-        .orderby('start/dateTime')
-        .top(10)
-        .get();
-      console.log(`Retrieved ${events.value.length} calendar events`);
-      return events.value;
-    } catch (error) {
-      console.error('Error getting calendar events:', error);
-      throw error;
-    }
+    // Return mock calendar events relevant to a Product Manager
+    return [
+      {
+        id: "1",
+        subject: "API Integration Planning with Accenture",
+        start: { dateTime: new Date(new Date().setHours(10, 0)).toISOString() },
+        end: { dateTime: new Date(new Date().setHours(11, 0)).toISOString() },
+        attendees: [
+          { emailAddress: { name: "John Smith", address: "john.smith@accenture.com" } },
+          { emailAddress: { name: "Maria Garcia", address: "m.garcia@salesforce.com" } }
+        ]
+      },
+      {
+        id: "2",
+        subject: "SalesCloud Master Data Review",
+        start: { dateTime: new Date(new Date().setHours(13, 0)).toISOString() },
+        end: { dateTime: new Date(new Date().setHours(14, 30)).toISOString() },
+        attendees: [
+          { emailAddress: { name: "Raj Patel", address: "raj.patel@wipro.com" } },
+          { emailAddress: { name: "Alex Wong", address: "alex.w@salesforce.com" } }
+        ]
+      },
+      {
+        id: "3",
+        subject: "Sprint Planning: Order Creation Optimization",
+        start: { dateTime: new Date(new Date().setHours(15, 0)).toISOString() },
+        end: { dateTime: new Date(new Date().setHours(16, 0)).toISOString() },
+        attendees: [
+          { emailAddress: { name: "Team SalesCloud", address: "salescloud@salesforce.com" } }
+        ]
+      }
+    ];
   }
 
   static async getTasks() {
-    console.log('Fetching tasks...');
-    try {
-      const lists = await this.client
-        .api('/me/todo/lists')
-        .get();
-      console.log(`Found ${lists.value.length} task lists`);
-      
-      const defaultList = lists.value[0];
-      if (defaultList) {
-        console.log('Using default task list:', defaultList.displayName);
-        const tasksInList = await this.client
-          .api(`/me/todo/lists/${defaultList.id}/tasks`)
-          .get();
-        console.log(`Retrieved ${tasksInList.value.length} tasks`);
-        return tasksInList.value;
+    // Return mock tasks relevant to the project
+    return [
+      {
+        id: "1",
+        title: "Review API Integration Technical Specs",
+        status: "inProgress",
+        importance: "high",
+        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
+        categories: ["Project"]
+      },
+      {
+        id: "2",
+        title: "Prepare Q2 Integration Roadmap",
+        status: "pending",
+        importance: "high",
+        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
+        categories: ["Work"]
+      },
+      {
+        id: "3",
+        title: "OSF Integration Testing Feedback",
+        status: "completed",
+        importance: "normal",
+        dueDateTime: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
+        categories: ["Project"]
+      },
+      {
+        id: "4",
+        title: "Master Data Schema Validation",
+        status: "inProgress",
+        importance: "high",
+        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
+        categories: ["Project"]
+      },
+      {
+        id: "5",
+        title: "Vendor Sync-up Documentation",
+        status: "pending",
+        importance: "normal",
+        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
+        categories: ["Work"]
       }
-      console.log('No task lists found');
-      return [];
-    } catch (error) {
-      console.error('Error getting tasks:', error);
-      throw error;
-    }
+    ];
   }
 
   static async getRecentEmails() {
-    console.log('Fetching recent emails...');
-    try {
-      const messages = await this.client
-        .api('/me/messages')
-        .select('subject,receivedDateTime,from,isRead')
-        .orderby('receivedDateTime desc')
-        .top(5)
-        .get();
-      console.log(`Retrieved ${messages.value.length} recent emails`);
-      return messages.value;
-    } catch (error) {
-      console.error('Error getting emails:', error);
-      throw error;
-    }
+    // Return mock emails relevant to the project
+    return [
+      {
+        id: "1",
+        subject: "RE: API Integration Timeline Update",
+        receivedDateTime: new Date(new Date().setMinutes(new Date().getMinutes() - 30)).toISOString(),
+        from: { emailAddress: { name: "David Kumar", address: "d.kumar@accenture.com" } },
+        isRead: false
+      },
+      {
+        id: "2",
+        subject: "Master Data Integration - Technical Review",
+        receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 2)).toISOString(),
+        from: { emailAddress: { name: "Elena Martinez", address: "e.martinez@osf.digital" } },
+        isRead: true
+      },
+      {
+        id: "3",
+        subject: "Updated: Sales Order Creation Workflow",
+        receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 3)).toISOString(),
+        from: { emailAddress: { name: "Priya Sharma", address: "p.sharma@wipro.com" } },
+        isRead: false
+      },
+      {
+        id: "4",
+        subject: "Sprint Demo Preparation",
+        receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 4)).toISOString(),
+        from: { emailAddress: { name: "Michael Chang", address: "m.chang@salesforce.com" } },
+        isRead: true
+      }
+    ];
   }
 }
