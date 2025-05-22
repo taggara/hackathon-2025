@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slack, Mail, Cloud, Video, AppWindow as Windows } from 'lucide-react';
+import { Slack, Mail, Cloud, Video, MessageSquareMore } from 'lucide-react';
 
 interface IntegrationCardProps {
   title: string;
@@ -56,7 +56,7 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Microsoft Teams"
           description="Connect your Microsoft Teams account"
-          icon={<Windows size={24} className="text-blue-500" />}
+          icon={<MessageSquareMore size={24} className="text-blue-500" />}
           connected={true}
           onClick={() => handleConnect('Microsoft')}
         />
