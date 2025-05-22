@@ -2,7 +2,6 @@ import { Client } from "@microsoft/microsoft-graph-client";
 import { AuthCodeMSALBrowserAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
 import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
 import { loginRequest } from "./msalConfig";
-import { mockCalendarEvents } from './mockData';
 
 export class GraphService {
   private static client: Client | null = null;
@@ -17,6 +16,8 @@ export class GraphService {
     this.initializationPromise = new Promise(async (resolve, reject) => {
       try {
         console.log('Initializing Graph client...');
+        await msalInstance.initialize();
+        
         const accounts = msalInstance.getAllAccounts();
         
         if (accounts.length === 0) {
@@ -90,9 +91,6 @@ export class GraphService {
       return user;
     } catch (error) {
       console.error('Error fetching user details:', error);
-      if (error instanceof InteractionRequiredAuthError) {
-        throw error;
-      }
       return {
         displayName: "Alissa Clark",
         mail: "alissa.k.clark@gmail.com",
@@ -109,8 +107,63 @@ export class GraphService {
       
       if (!this.client) {
         console.log('No authenticated user, returning mock calendar data');
-        // Only return the first 5 events
-        return mockCalendarEvents.slice(0, 5);
+        return [
+          {
+            id: "1",
+            subject: "Weekly Team Sync",
+            start: { dateTime: new Date().setHours(9, 0) },
+            end: { dateTime: new Date().setHours(10, 0) },
+            source: "microsoft",
+            isVideoCall: true,
+            attendees: [
+              { emailAddress: { name: "Team OmniSales", address: "team.omnisales@loreal.com" } }
+            ]
+          },
+          {
+            id: "2",
+            subject: "API Integration Planning",
+            start: { dateTime: new Date().setHours(11, 0) },
+            end: { dateTime: new Date().setHours(12, 0) },
+            source: "microsoft",
+            isVideoCall: true,
+            attendees: [
+              { emailAddress: { name: "John Smith", address: "john.smith@accenture.com" } }
+            ]
+          },
+          {
+            id: "3",
+            subject: "Sales Pipeline Review",
+            start: { dateTime: new Date().setHours(14, 0) },
+            end: { dateTime: new Date().setHours(15, 0) },
+            source: "google",
+            isVideoCall: true,
+            attendees: [
+              { emailAddress: { name: "Sales Team", address: "sales@loreal.com" } }
+            ]
+          },
+          {
+            id: "4",
+            subject: "Technical Architecture Review",
+            start: { dateTime: new Date().setHours(15, 30) },
+            end: { dateTime: new Date().setHours(16, 30) },
+            source: "microsoft",
+            isVideoCall: true,
+            attendees: [
+              { emailAddress: { name: "Tech Team", address: "tech@loreal.com" } }
+            ]
+          },
+          {
+            id: "5",
+            subject: "Stakeholder Update",
+            start: { dateTime: new Date().setHours(17, 0) },
+            end: { dateTime: new Date().setHours(18, 0) },
+            source: "microsoft",
+            isVideoCall: true,
+            attendees: [
+              { emailAddress: { name: "Executive Team", address: "exec@loreal.com" } }
+            ]
+          }
+        ];
       }
 
       const events = await this.client
@@ -122,7 +175,7 @@ export class GraphService {
       return events.value;
     } catch (error) {
       console.error('Error fetching calendar events:', error);
-      return mockCalendarEvents.slice(0, 5);
+      return [];
     }
   }
 
@@ -205,6 +258,27 @@ export class GraphService {
             subject: "Master Data Integration - Technical Review",
             receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 2)).toISOString(),
             from: { emailAddress: { name: "Elena Martinez", address: "e.martinez@osf.digital" } },
+            isRead: true
+          },
+          {
+            id: "3",
+            subject: "Updated: Sales Order Creation Workflow",
+            receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 3)).toISOString(),
+            from: { emailAddress: { name: "Priya Sharma", address: "p.sharma@wipro.com" } },
+            isRead: false
+          },
+          {
+            id: "4",
+            subject: "Sprint Demo Preparation",
+            receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 4)).toISOString(),
+            from: { emailAddress: { name: "Michael Chang", address: "m.chang@salesforce.com" } },
+            isRead: true
+          },
+          {
+            id: "5",
+            subject: "RE: Integration Testing Results",
+            receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 5)).toISOString(),
+            from: { emailAddress: { name: "Sarah Wilson", address: "s.wilson@accenture.com" } },
             isRead: true
           }
         ];
