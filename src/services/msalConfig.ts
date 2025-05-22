@@ -1,4 +1,5 @@
-import { Configuration, PopupRequest } from "@azure/msal-browser";
+import { Configuration, PopupRequest, LogLevel } from "@azure/msal-browser";
+import { AuthLogger } from "./authLogger";
 
 export const msalConfig: Configuration = {
   auth: {
@@ -23,7 +24,14 @@ export const msalConfig: Configuration = {
     allowNativeBroker: false,
     windowHashTimeout: 60000,
     iframeHashTimeout: 6000,
-    loadFrameTimeout: 0
+    loadFrameTimeout: 0,
+    loggerOptions: {
+      logLevel: LogLevel.Verbose,
+      loggerCallback: (level: LogLevel, message: string, containsPii: boolean) => {
+        AuthLogger.log(level, message, containsPii);
+      },
+      piiLoggingEnabled: false
+    }
   }
 };
 
