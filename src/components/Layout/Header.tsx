@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
           <Menu size={24} />
         </button>
         <div className="flex items-center">
-          <span className="font-bold text-lg md:text-xl">Priortai</span>
+          <span className="font-bold text-lg md:text-xl">AI Alchemist</span>
         </div>
       </div>
 
