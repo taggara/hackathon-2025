@@ -50,7 +50,7 @@ const IntegrationsSettings: React.FC = () => {
   return (
     <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
       <h2 className="text-xl font-semibold mb-2 dark:text-white">Integrations</h2>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Priortai works best with multiple connections.</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">AI Alchemist works best with multiple connections.</p>
       
       <div className="space-y-4">
         <IntegrationCard
