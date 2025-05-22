@@ -53,23 +53,23 @@ const TasksOverview: React.FC = () => {
   }, []);
 
   const taskStatItems = [
-    { label: 'Completed', count: taskStats.completed, icon: <CheckCircle size={18} className="text-green-500" /> },
-    { label: 'In Progress', count: taskStats.inProgress, icon: <Clock size={18} className="text-blue-500" /> },
-    { label: 'Pending', count: taskStats.pending, icon: <AlertTriangle size={18} className="text-amber-500" /> },
-    { label: 'Overdue', count: taskStats.overdue, icon: <XCircle size={18} className="text-red-500" /> },
+    { label: 'Completed', count: taskStats.completed, icon: <CheckCircle size={18} className="text-green-400" /> },
+    { label: 'In Progress', count: taskStats.inProgress, icon: <Clock size={18} className="text-blue-400" /> },
+    { label: 'Pending', count: taskStats.pending, icon: <AlertTriangle size={18} className="text-amber-400" /> },
+    { label: 'Overdue', count: taskStats.overdue, icon: <XCircle size={18} className="text-red-400" /> },
   ];
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+      <div className="bg-gray-700 dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="h-6 bg-gray-600 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="grid grid-cols-2 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-24 bg-gray-600 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
-          <div className="h-2.5 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          <div className="h-2.5 bg-gray-600 dark:bg-gray-700 rounded"></div>
         </div>
       </div>
     );
@@ -80,14 +80,14 @@ const TasksOverview: React.FC = () => {
     : 0;
 
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+    <div className="bg-gray-700 dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold dark:text-white">Tasks Overview</h2>
+        <h2 className="text-xl font-semibold text-white">Tasks Overview</h2>
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          className="p-2 rounded-full hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors"
         >
-          {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+          {isCollapsed ? <ChevronDown size={20} className="text-white" /> : <ChevronUp size={20} className="text-white" />}
         </button>
       </div>
       
@@ -96,15 +96,15 @@ const TasksOverview: React.FC = () => {
           {taskStatItems.map((stat, index) => (
             <div 
               key={index} 
-              className="border dark:border-gray-700 rounded-lg p-4 transition-all hover:shadow-md"
+              className="border border-gray-600 dark:border-gray-700 rounded-lg p-4 transition-all hover:shadow-md"
             >
               <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700/50">
+                <div className="p-2 rounded-full bg-gray-600 dark:bg-gray-700/50">
                   {stat.icon}
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
-                  <p className="text-2xl font-semibold mt-1 dark:text-white">{stat.count}</p>
+                  <p className="text-sm text-gray-300 dark:text-gray-400">{stat.label}</p>
+                  <p className="text-2xl font-semibold mt-1 text-white">{stat.count}</p>
                 </div>
               </div>
             </div>
@@ -112,20 +112,20 @@ const TasksOverview: React.FC = () => {
         </div>
         
         <div className="mt-6">
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-1">
+          <div className="w-full bg-gray-600 dark:bg-gray-700 rounded-full h-2.5 mb-1">
             <div 
-              className="bg-blue-600 h-2.5 rounded-full" 
+              className="bg-blue-500 h-2.5 rounded-full" 
               style={{ width: `${completionPercentage}%` }}
             ></div>
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-300 dark:text-gray-400">
             {completionPercentage}% of tasks completed
           </p>
         </div>
       </div>
       
       {isCollapsed && (
-        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+        <div className="text-center text-gray-300 dark:text-gray-400 py-4">
           Content collapsed. Click the arrow to expand.
         </div>
       )}

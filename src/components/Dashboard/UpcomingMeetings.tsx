@@ -25,24 +25,24 @@ const UpcomingMeetings: React.FC = () => {
   const getSourceIcon = (source: string) => {
     switch (source) {
       case 'microsoft':
-        return <Windows size={16} className="text-blue-500" />;
+        return <Windows size={16} className="text-blue-400" />;
       case 'google':
-        return <Google size={16} className="text-red-500" />;
+        return <Google size={16} className="text-red-400" />;
       case 'slack':
-        return <Slack size={16} className="text-purple-500" />;
+        return <Slack size={16} className="text-purple-400" />;
       default:
-        return <Windows size={16} className="text-blue-500" />;
+        return <Windows size={16} className="text-blue-400" />;
     }
   };
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+      <div className="bg-gray-700 dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="h-6 bg-gray-600 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-20 bg-gray-600 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
         </div>
@@ -51,18 +51,18 @@ const UpcomingMeetings: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+    <div className="bg-gray-700 dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold dark:text-white">Today's Meetings</h2>
+        <h2 className="text-xl font-semibold text-white">Today's Meetings</h2>
         <div className="flex items-center space-x-2">
-          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
+          <button className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">
             View Calendar
           </button>
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-full hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors"
           >
-            {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+            {isCollapsed ? <ChevronDown size={20} className="text-white" /> : <ChevronUp size={20} className="text-white" />}
           </button>
         </div>
       </div>
@@ -71,14 +71,14 @@ const UpcomingMeetings: React.FC = () => {
         {meetings.map(meeting => (
           <div 
             key={meeting.id}
-            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            className="p-4 border border-gray-600 dark:border-gray-700 rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700/50 transition-colors"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 {getSourceIcon(meeting.source)}
                 <div>
-                  <h3 className="font-medium dark:text-white">{meeting.subject}</h3>
-                  <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  <h3 className="font-medium text-white">{meeting.subject}</h3>
+                  <div className="flex items-center mt-1 text-sm text-gray-300 dark:text-gray-400">
                     <Clock size={14} className="mr-1" />
                     <span>
                       {new Date(meeting.start.dateTime).toLocaleTimeString([], { 
@@ -93,12 +93,12 @@ const UpcomingMeetings: React.FC = () => {
                 </div>
               </div>
               <div className="flex space-x-2">
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center text-sm text-gray-300 dark:text-gray-400">
                   <Users size={14} className="mr-1" />
                   <span>{meeting.attendees?.length || 0}</span>
                 </div>
                 {meeting.isVideoCall && (
-                  <button className="p-1 bg-blue-100 dark:bg-blue-900/50 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
+                  <button className="p-1 bg-blue-900/50 dark:bg-blue-900/50 rounded-md text-blue-400 dark:text-blue-400 hover:bg-blue-800 dark:hover:bg-blue-800 transition-colors">
                     <Video size={16} />
                   </button>
                 )}
@@ -107,14 +107,14 @@ const UpcomingMeetings: React.FC = () => {
           </div>
         ))}
         {meetings.length === 0 && (
-          <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+          <div className="text-center text-gray-300 dark:text-gray-400 py-4">
             No meetings scheduled for today
           </div>
         )}
       </div>
       
       {isCollapsed && (
-        <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+        <div className="text-center text-gray-300 dark:text-gray-400 py-4">
           Content collapsed. Click the arrow to expand.
         </div>
       )}
