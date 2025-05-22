@@ -26,6 +26,8 @@ const ChatbotCard: React.FC = () => {
   const handleSendMessage = async () => {
     if (input.trim() === '' || isLoading) return;
     
+    console.log('🚀 Initiating message send:', { message: input });
+    
     // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
@@ -34,11 +36,13 @@ const ChatbotCard: React.FC = () => {
       timestamp: new Date(),
     };
     
+    console.log('📤 Adding user message to chat:', userMessage);
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
     
     try {
+      console.log('📡 Sending API request to endpoint...');
       const response = await fetch('https://dabs2bck.app.n8n.cloud/webhook/69aff619-cd62-487a-ab61-6829ac81b01c', {
         method: 'POST',
         headers: {
@@ -47,11 +51,14 @@ const ChatbotCard: React.FC = () => {
         body: JSON.stringify({ message: input }),
       });
 
+      console.log('📥 Received API response:', { status: response.status, ok: response.ok });
+
       if (!response.ok) {
-        throw new Error('Failed to get response from AI');
+        throw new Error(`API request failed with status ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('✨ Parsed API response data:', data);
       
       const aiMessage: Message = {
         id: messages.length + 2,
@@ -60,17 +67,20 @@ const ChatbotCard: React.FC = () => {
         timestamp: new Date(),
       };
       
+      console.log('📤 Adding AI response to chat:', aiMessage);
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error('Error getting AI response:', error);
+      console.error('❌ Error in API request:', error);
       const errorMessage: Message = {
         id: messages.length + 2,
         content: "I apologize, but I'm having trouble connecting to my backend service. Please try again later.",
         isUser: false,
         timestamp: new Date(),
       };
+      console.log('📤 Adding error message to chat:', errorMessage);
       setMessages(prev => [...prev, errorMessage]);
     } finally {
+      console.log('✅ Request cycle completed');
       setIsLoading(false);
     }
   };
