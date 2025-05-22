@@ -16,12 +16,12 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
 
   return (
     <header className={`py-4 px-6 flex items-center justify-between shadow-sm z-10 transition-colors
-      ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
+      ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-700 text-white'}`}>
       <div className="flex items-center">
         <button
           onClick={toggleSidebar}
           className={`p-2 mr-4 rounded-full hover:bg-opacity-10 transition-colors
-            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
+            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-600'}`}
           aria-label="Toggle sidebar"
         >
           <Menu size={24} />
@@ -37,8 +37,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
       </div>
 
       <div className="hidden md:flex items-center relative flex-1 max-w-md mx-8">
-        <div className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none
-          ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
           <Search size={18} />
         </div>
         <input
@@ -47,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
           className={`block w-full pl-10 pr-3 py-2 rounded-lg border transition-colors
             ${darkMode 
               ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500' 
-              : 'bg-gray-100 border-gray-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+              : 'bg-gray-600 border-gray-500 text-white placeholder-gray-400 focus:border-blue-500'
             } focus:outline-none focus:ring-1 focus:ring-blue-500`}
         />
       </div>
@@ -56,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
         <button
           onClick={toggleDarkMode}
           className={`p-2 rounded-full hover:bg-opacity-10 transition-colors
-            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
+            ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-600'}`}
           aria-label="Toggle dark mode"
         >
           {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -66,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
           <div className="flex items-center space-x-4">
             <button
               className={`p-2 rounded-full hover:bg-opacity-10 transition-colors relative
-                ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-200'}`}
+                ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-600'}`}
               aria-label="Notifications"
             >
               <Bell size={20} />

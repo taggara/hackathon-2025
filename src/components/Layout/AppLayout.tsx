@@ -24,7 +24,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onNavigate }) => {
   ];
 
   return (
-    <div className={`min-h-screen flex flex-col ${darkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen flex flex-col ${darkMode ? 'dark bg-gray-900' : 'bg-gray-800'}`}>
       <Header 
         toggleSidebar={toggleSidebar} 
         toggleDarkMode={toggleDarkMode} 
@@ -39,7 +39,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onNavigate }) => {
           onNavigate={onNavigate}
         />
         <main className={`flex-1 overflow-y-auto transition-all duration-300 p-6 
-          ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
+          ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-800 text-gray-100'}`}>
           {children}
         </main>
       </div>
