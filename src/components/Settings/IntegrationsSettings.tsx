@@ -54,21 +54,21 @@ const IntegrationsSettings: React.FC = () => {
       <div className="space-y-4">
         <IntegrationCard
           title="Slack"
-          description="Connect your Slack workspace to receive notifications and updates"
+          description="Connect your Slack Instance"
           icon={<Slack size={24} className="text-blue-500" />}
           onClick={() => handleConnect('Slack')}
         />
         
         <IntegrationCard
           title="Google Workspace"
-          description="Sync your Google Calendar and access Google Drive files"
+          description="Connect your Google Suite"
           icon={<Mail size={24} className="text-red-500" />}
           onClick={() => handleConnect('Google')}
         />
         
         <IntegrationCard
           title="Amazon Workspace"
-          description="Access your Amazon Workspace files and collaborate with team"
+          description="Connect your Amazon Workspace"
           icon={<Cloud size={24} className="text-yellow-500" />}
           onClick={() => handleConnect('Amazon')}
         />
