@@ -17,11 +17,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ content, isUser, timestamp })
       <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${
         isUser 
           ? 'bg-blue-500 text-white rounded-tr-none' 
-          : 'bg-white text-gray-900 shadow-sm rounded-tl-none border border-gray-200'
+          : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-tl-none'
       }`}>
         <p>{content}</p>
         <div className={`text-xs mt-1 ${
-          isUser ? 'text-blue-100' : 'text-gray-500'
+          isUser ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'
         }`}>
           {formattedTime}
         </div>
