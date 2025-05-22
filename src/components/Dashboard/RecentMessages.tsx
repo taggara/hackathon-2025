@@ -24,7 +24,7 @@ const RecentMessages: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
+      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="space-y-3">
@@ -40,7 +40,7 @@ const RecentMessages: React.FC = () => {
   const unreadCount = messages.filter(msg => msg.isRead === false).length;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
@@ -70,7 +70,7 @@ const RecentMessages: React.FC = () => {
             className={`p-4 rounded-lg transition-colors ${
               !msg.isRead 
                 ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800' 
-                : 'border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
+                : 'border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'
             }`}
           >
             <div className="flex">

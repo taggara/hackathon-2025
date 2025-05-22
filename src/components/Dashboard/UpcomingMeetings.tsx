@@ -24,7 +24,7 @@ const UpcomingMeetings: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
+      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="space-y-3">
@@ -38,7 +38,7 @@ const UpcomingMeetings: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold dark:text-white">Today's Meetings</h2>
         <div className="flex items-center space-x-2">
@@ -58,7 +58,7 @@ const UpcomingMeetings: React.FC = () => {
         {meetings.map(meeting => (
           <div 
             key={meeting.id}
-            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -81,7 +81,7 @@ const UpcomingMeetings: React.FC = () => {
                   <Users size={14} className="mr-1" />
                   <span>{meeting.attendees?.length || 0}</span>
                 </div>
-                <button className="p-1 bg-blue-100 dark:bg-blue-900 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
+                <button className="p-1 bg-blue-100 dark:bg-blue-900/50 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
                   <Video size={16} />
                 </button>
               </div>

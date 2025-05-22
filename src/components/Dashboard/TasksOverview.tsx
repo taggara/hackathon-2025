@@ -61,7 +61,7 @@ const TasksOverview: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
+      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="grid grid-cols-2 gap-4">
@@ -80,7 +80,7 @@ const TasksOverview: React.FC = () => {
     : 0;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold dark:text-white">Tasks Overview</h2>
         <button 
@@ -99,7 +99,7 @@ const TasksOverview: React.FC = () => {
               className="border dark:border-gray-700 rounded-lg p-4 transition-all hover:shadow-md"
             >
               <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700">
+                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700/50">
                   {stat.icon}
                 </div>
                 <div>
