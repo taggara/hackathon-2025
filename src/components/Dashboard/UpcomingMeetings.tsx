@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Video, Users, Clock, ChevronUp, ChevronDown } from 'lucide-react';
+import { Video, Users, Clock, ChevronUp, ChevronDown, AppWindow as Windows, Mail as Google, Slack } from 'lucide-react';
 import { GraphService } from '../../services/graphService';
 
 const UpcomingMeetings: React.FC = () => {
@@ -21,6 +21,19 @@ const UpcomingMeetings: React.FC = () => {
 
     fetchMeetings();
   }, []);
+
+  const getSourceIcon = (source: string) => {
+    switch (source) {
+      case 'microsoft':
+        return <Windows size={16} className="text-blue-500" />;
+      case 'google':
+        return <Google size={16} className="text-red-500" />;
+      case 'slack':
+        return <Slack size={16} className="text-purple-500" />;
+      default:
+        return <Windows size={16} className="text-blue-500" />;
+    }
+  };
 
   if (loading) {
     return (
@@ -61,19 +74,22 @@ const UpcomingMeetings: React.FC = () => {
             className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
           >
             <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium dark:text-white">{meeting.subject}</h3>
-                <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  <Clock size={14} className="mr-1" />
-                  <span>
-                    {new Date(meeting.start.dateTime).toLocaleTimeString([], { 
-                      hour: '2-digit', 
-                      minute: '2-digit' 
-                    })} - {new Date(meeting.end.dateTime).toLocaleTimeString([], { 
-                      hour: '2-digit', 
-                      minute: '2-digit' 
-                    })}
-                  </span>
+              <div className="flex items-center space-x-3">
+                {getSourceIcon(meeting.source)}
+                <div>
+                  <h3 className="font-medium dark:text-white">{meeting.subject}</h3>
+                  <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <Clock size={14} className="mr-1" />
+                    <span>
+                      {new Date(meeting.start.dateTime).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })} - {new Date(meeting.end.dateTime).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="flex space-x-2">
@@ -81,9 +97,11 @@ const UpcomingMeetings: React.FC = () => {
                   <Users size={14} className="mr-1" />
                   <span>{meeting.attendees?.length || 0}</span>
                 </div>
-                <button className="p-1 bg-blue-100 dark:bg-blue-900/50 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
-                  <Video size={16} />
-                </button>
+                {meeting.isVideoCall && (
+                  <button className="p-1 bg-blue-100 dark:bg-blue-900/50 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
+                    <Video size={16} />
+                  </button>
+                )}
               </div>
             </div>
           </div>
