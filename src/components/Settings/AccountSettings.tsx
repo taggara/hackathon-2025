@@ -1,10 +1,27 @@
 import React from 'react';
 import { useMsal } from "@azure/msal-react";
 import { User, Mail, Building2, Briefcase } from 'lucide-react';
+import { GraphService } from '../../services/graphService';
 
 const AccountSettings: React.FC = () => {
   const { accounts } = useMsal();
+  const [userDetails, setUserDetails] = React.useState<any>(null);
   const userAccount = accounts[0];
+
+  React.useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const details = await GraphService.getUserDetails();
+        setUserDetails(details);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    if (accounts.length > 0) {
+      fetchUserDetails();
+    }
+  }, [accounts]);
 
   return (
     <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
@@ -29,7 +46,7 @@ const AccountSettings: React.FC = () => {
               <User className="text-blue-500" size={20} />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Display Name</p>
-                <p className="font-medium dark:text-white">{userAccount?.name || 'Not set'}</p>
+                <p className="font-medium dark:text-white">{userDetails?.displayName || 'Not set'}</p>
               </div>
             </div>
           </div>
@@ -39,7 +56,7 @@ const AccountSettings: React.FC = () => {
               <Mail className="text-blue-500" size={20} />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                <p className="font-medium dark:text-white">{userAccount?.username}</p>
+                <p className="font-medium dark:text-white">{userDetails?.mail || userAccount?.username}</p>
               </div>
             </div>
           </div>
@@ -49,7 +66,7 @@ const AccountSettings: React.FC = () => {
               <Building2 className="text-blue-500" size={20} />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Department</p>
-                <p className="font-medium dark:text-white">O+O OmniSales Commerical</p>
+                <p className="font-medium dark:text-white">{userDetails?.companyName || 'Not set'}</p>
               </div>
             </div>
           </div>
@@ -59,7 +76,7 @@ const AccountSettings: React.FC = () => {
               <Briefcase className="text-blue-500" size={20} />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Job Title</p>
-                <p className="font-medium dark:text-white">Senior IT Manager</p>
+                <p className="font-medium dark:text-white">{userDetails?.jobTitle || 'Not set'}</p>
               </div>
             </div>
           </div>
