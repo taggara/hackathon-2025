@@ -25,6 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const { accounts } = useMsal();
   const [userDetails, setUserDetails] = useState<any>(null);
   const isAuthenticated = accounts.length > 0;
+  const [activePath, setActivePath] = useState('/');
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -41,6 +42,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     fetchUserDetails();
   }, [isAuthenticated]);
 
+  const handleNavigation = (path: string) => {
+    setActivePath(path);
+    if (window.innerWidth < 768) {
+      toggleSidebar();
+    }
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -55,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       <aside 
         className={`fixed md:static inset-y-0 left-0 z-30 w-64 transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-          ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} shadow-lg md:shadow-none`}
+          ${darkMode ? 'bg-gray-800/50 text-white' : 'bg-white text-gray-800'} shadow-lg md:shadow-none`}
       >
         <div className="h-full flex flex-col">
           <div className="h-16 flex items-center justify-between px-4 md:hidden">
@@ -74,21 +82,21 @@ const Sidebar: React.FC<SidebarProps> = ({
             <ul className="space-y-1">
               {navItems.map((item, index) => (
                 <li key={index}>
-                  <a 
-                    href={item.path}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors
-                      ${index === 0 
+                  <button 
+                    onClick={() => handleNavigation(item.path)}
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors w-full text-left
+                      ${item.path === activePath
                         ? darkMode 
-                          ? 'bg-gray-700 text-white' 
+                          ? 'bg-gray-700/50 text-white' 
                           : 'bg-blue-50 text-blue-600' 
                         : darkMode 
-                          ? 'text-gray-300 hover:bg-gray-700' 
+                          ? 'text-gray-300 hover:bg-gray-700/50' 
                           : 'text-gray-700 hover:bg-gray-100'
                       }`}
                   >
                     {item.icon}
                     <span>{item.label}</span>
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
