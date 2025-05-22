@@ -1,6 +1,5 @@
 import { Configuration, PopupRequest } from "@azure/msal-browser";
 
-// MSAL configuration object
 export const msalConfig: Configuration = {
   auth: {
     clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
@@ -48,7 +47,11 @@ export const msalConfig: Configuration = {
 
 export const loginRequest: PopupRequest = {
   scopes: [
-    "user_impersonation"
+    "User.Read",
+    "Calendars.Read",
+    "Mail.Read",
+    "Tasks.Read",
+    "Tasks.ReadWrite"
   ],
   prompt: "select_account"
 };
@@ -57,5 +60,5 @@ export const graphConfig = {
   graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
   graphMailEndpoint: "https://graph.microsoft.com/v1.0/me/messages",
   graphEventsEndpoint: "https://graph.microsoft.com/v1.0/me/events",
-  graphTasksEndpoint: "https://graph.microsoft.com/v1.0/me/todo/lists/tasks/tasks"
+  graphTasksEndpoint: "https://graph.microsoft.com/v1.0/me/todo/lists"
 };
