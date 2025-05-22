@@ -49,7 +49,7 @@ export const msalConfig: Configuration = {
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
 export const loginRequest: PopupRequest = {
   scopes: [
-    ".default"
+    "user_impersonation"
   ],
   prompt: "select_account"
 };
