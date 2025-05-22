@@ -2,6 +2,7 @@ import { Client } from "@microsoft/microsoft-graph-client";
 import { AuthCodeMSALBrowserAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
 import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
 import { loginRequest } from "./msalConfig";
+import { mockCalendarEvents } from './mockData';
 
 export class GraphService {
   private static client: Client;
@@ -52,47 +53,16 @@ export class GraphService {
       console.warn('Falling back to mock user data');
       return {
         displayName: "Alissa Clark",
-        mail: "alissa.k.clark@gmail.com,
+        mail: "alissa.k.clark@gmail.com",
         jobTitle: "Senior IT Manager",
-        department: "O+O OmniSales Commercialt",
+        department: "O+O OmniSales Commercial",
         id: "OAID00084781"
       };
     }
   }
 
   static async getCalendarEvents() {
-    // Return mock calendar events relevant to a Product Manager
-    return [
-      {
-        id: "1",
-        subject: "API Integration Planning with Accenture",
-        start: { dateTime: new Date(new Date().setHours(10, 0)).toISOString() },
-        end: { dateTime: new Date(new Date().setHours(11, 0)).toISOString() },
-        attendees: [
-          { emailAddress: { name: "John Smith", address: "john.smith@accenture.com" } },
-          { emailAddress: { name: "Maria Garcia", address: "m.garcia@salesforce.com" } }
-        ]
-      },
-      {
-        id: "2",
-        subject: "SalesCloud Master Data Review",
-        start: { dateTime: new Date(new Date().setHours(13, 0)).toISOString() },
-        end: { dateTime: new Date(new Date().setHours(14, 30)).toISOString() },
-        attendees: [
-          { emailAddress: { name: "Raj Patel", address: "raj.patel@wipro.com" } },
-          { emailAddress: { name: "Alex Wong", address: "alex.w@salesforce.com" } }
-        ]
-      },
-      {
-        id: "3",
-        subject: "Sprint Planning: Order Creation Optimization",
-        start: { dateTime: new Date(new Date().setHours(15, 0)).toISOString() },
-        end: { dateTime: new Date(new Date().setHours(16, 0)).toISOString() },
-        attendees: [
-          { emailAddress: { name: "Team SalesCloud", address: "salescloud@salesforce.com" } }
-        ]
-      }
-    ];
+    return mockCalendarEvents;
   }
 
   static async getTasks() {
