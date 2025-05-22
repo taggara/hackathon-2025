@@ -13,20 +13,17 @@ const LoginButton: React.FC = () => {
       
       const response = await instance.loginPopup({
         ...loginRequest,
-        extraScopesToConsent: ["user_impersonation"],
         claims: {
           id_token: {
             groups: { essential: true }
           },
-          access_token: {
-            groups: { essential: true }
+          saml2Token: {
+            groups: null
           }
         }
       });
       
       AuthLogger.log(2, `Login successful for account: ${response.account?.username}`);
-      
-      // Log token details (excluding sensitive information)
       AuthLogger.log(3, `Token type: ${response.account?.homeAccountId ? "Full access" : "Limited"}`);
       AuthLogger.log(3, `Scopes granted: ${response.scopes?.join(", ")}`);
       

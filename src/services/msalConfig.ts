@@ -5,16 +5,9 @@ export const msalConfig: Configuration = {
   auth: {
     clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
     authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
-    redirectUri: `${window.location.origin}/auth`,
+    redirectUri: "https://loreal.beyondtrustcloud.com/saml/sso",
     postLogoutRedirectUri: window.location.origin,
-    navigateToLoginRequestUrl: true,
-    knownAuthorities: ["login.microsoftonline.com"],
-    validatorOptions: {
-      validRedirectUris: [
-        `${window.location.origin}/auth`,
-        /^https:\/\/.*\.d1avkhqscb8f3d\.amplifyapp\.com\/auth$/
-      ]
-    }
+    navigateToLoginRequestUrl: true
   },
   cache: {
     cacheLocation: "sessionStorage",
@@ -36,11 +29,8 @@ export const msalConfig: Configuration = {
 };
 
 export const loginRequest: PopupRequest = {
-  scopes: ["User.Read", "user_impersonation"],
-  prompt: "select_account",
-  extraQueryParameters: {
-    domain_hint: "organizations"
-  }
+  scopes: ["user_impersonation"],
+  prompt: "select_account"
 };
 
 export const graphConfig = {
