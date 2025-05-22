@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
         </button>
         <div className="flex items-center space-x-3">
           <img 
-            src="https://raw.githubusercontent.com/stackblitz/ai-alchemist/main/logo.png" 
+            src="https://i.imgur.com/9eYIz0m.png" 
             alt="AI Alchemist"
             className="h-8 w-8"
           />
