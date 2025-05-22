@@ -19,9 +19,7 @@ const DashboardPage: React.FC = () => {
         <div className="h-[500px]">
           <ChatbotCard />
         </div>
-        <div className="h-[200px] overflow-hidden">
-          <RecentMessages />
-        </div>
+        <RecentMessages />
       </div>
     </div>
   );

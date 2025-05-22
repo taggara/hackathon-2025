@@ -37,7 +37,7 @@ const RecentMessages: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
+      <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="space-y-3">
@@ -51,61 +51,65 @@ const RecentMessages: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
-        <div className="flex items-center space-x-2">
-          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
-            View All
-          </button>
-          <button 
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-          >
-            {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
-          </button>
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm flex flex-col">
+      <div className="p-4 border-b dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
+          <div className="flex items-center space-x-2">
+            <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
+              View All
+            </button>
+            <button 
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+            </button>
+          </div>
         </div>
       </div>
       
-      <div className={`space-y-4 transition-all ${isCollapsed ? 'hidden' : ''}`}>
-        {messages.map(message => (
-          <div 
-            key={message.id}
-            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                {getSourceIcon(message.source || 'microsoft')}
-                <div>
-                  <h3 className="font-medium dark:text-white">{message.subject}</h3>
-                  <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    <span>{message.from.emailAddress.name}</span>
-                    <span className="mx-2">•</span>
-                    <span>
-                      {new Date(message.receivedDateTime).toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </span>
+      <div className={`flex-1 overflow-y-auto ${isCollapsed ? 'hidden' : ''}`}>
+        <div className="p-4 space-y-4">
+          {messages.map(message => (
+            <div 
+              key={message.id}
+              className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  {getSourceIcon(message.source || 'microsoft')}
+                  <div>
+                    <h3 className="font-medium dark:text-white line-clamp-1">{message.subject}</h3>
+                    <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="line-clamp-1">{message.from.emailAddress.name}</span>
+                      <span className="mx-2">•</span>
+                      <span>
+                        {new Date(message.receivedDateTime).toLocaleTimeString([], { 
+                          hour: '2-digit', 
+                          minute: '2-digit' 
+                        })}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                {!message.isRead && (
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                )}
-                <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md text-gray-500 dark:text-gray-400 transition-colors">
-                  <MessageSquare size={16} />
-                </button>
+                <div className="flex items-center space-x-2 ml-4">
+                  {!message.isRead && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
+                  <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md text-gray-500 dark:text-gray-400 transition-colors">
+                    <MessageSquare size={16} />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-        {messages.length === 0 && (
-          <div className="text-center text-gray-500 dark:text-gray-400 py-4">
-            No recent messages
-          </div>
-        )}
+          ))}
+          {messages.length === 0 && (
+            <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+              No recent messages
+            </div>
+          )}
+        </div>
       </div>
       
       {isCollapsed && (
