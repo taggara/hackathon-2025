@@ -13,7 +13,7 @@ const ChatbotCard: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      content: "Hello! I'm your AI assistant powered by AI Alchemist. How can I help you today?",
+      content: "Hello! I'm your AI assistant powered by OpenAI. How can I help you today?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -98,16 +98,9 @@ const ChatbotCard: React.FC = () => {
   return (
     <div className={`bg-white dark:bg-gray-800/50 rounded-xl shadow-sm flex flex-col h-full transition-all`}>
       <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <img 
-            src="https://raw.githubusercontent.com/stackblitz/ai-alchemist/main/logo.png" 
-            alt="AI Alchemist"
-            className="h-6 w-6"
-          />
-          <div>
-            <h2 className="font-semibold dark:text-white">AI Assistant</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Powered by AI Alchemist</p>
-          </div>
+        <div>
+          <h2 className="font-semibold dark:text-white">AI Assistant</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Powered by Claude-Sonnet 3.5</p>
         </div>
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)}
