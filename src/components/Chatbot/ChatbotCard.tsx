@@ -57,7 +57,7 @@ const ChatbotCard: React.FC = () => {
       }
 
       const data = await response.json();
-      console.log('Parsed API response data:', data);
+      console.log('Parsed API response data:', data.output);
       
       const aiMessage: Message = {
         id: messages.length + 2,
