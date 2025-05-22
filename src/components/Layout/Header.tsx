@@ -26,7 +26,12 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, toggleDarkMode, darkMode
         >
           <Menu size={24} />
         </button>
-        <div className="flex items-center">
+        <div className="flex items-center space-x-3">
+          <img 
+            src="https://raw.githubusercontent.com/stackblitz/ai-alchemist/main/logo.png" 
+            alt="AI Alchemist"
+            className="h-8 w-8"
+          />
           <span className="font-bold text-lg md:text-xl">AI Alchemist</span>
         </div>
       </div>
