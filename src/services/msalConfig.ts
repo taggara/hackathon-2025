@@ -54,7 +54,7 @@ export const loginRequest: PopupRequest = {
     "Calendars.Read",
     "Mail.Read",
     "Chat.Read",
-    "presence.read"
+    "Presence.read"
   ],
   prompt: "select_account"
 };
