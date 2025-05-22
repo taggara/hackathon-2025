@@ -20,7 +20,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onNavigate }) => {
     { icon: <List size={20} />, label: 'Tasks', path: '/tasks' },
     { icon: <Calendar size={20} />, label: 'Calendar', path: '/calendar' },
     { icon: <MessageSquare size={20} />, label: 'Chat', path: '/chat' },
-    { icon: <User size={20} />, label: 'Profile', path: '/profile' },
     { icon: <Settings size={20} />, label: 'Settings', path: '/settings' },
   ];
 
