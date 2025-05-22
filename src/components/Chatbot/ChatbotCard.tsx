@@ -68,7 +68,7 @@ const ChatbotCard: React.FC = () => {
       
       const aiMessage: Message = {
         id: messages.length + 2,
-        content: data.response || data.message || 'I apologize, but I encountered an issue processing your request.',
+        content: data.response.output || data.message || 'I apologize, but I encountered an issue processing your request.',
         isUser: false,
         timestamp: new Date(),
       };
