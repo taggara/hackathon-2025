@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useMsal } from "@azure/msal-react";
+import { GraphService } from '../../services/graphService';
 
 interface NavItem {
   icon: React.ReactNode;
@@ -20,6 +22,25 @@ const Sidebar: React.FC<SidebarProps> = ({
   navItems,
   darkMode 
 }) => {
+  const { accounts } = useMsal();
+  const [userDetails, setUserDetails] = useState<any>(null);
+  const isAuthenticated = accounts.length > 0;
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      if (isAuthenticated) {
+        try {
+          const details = await GraphService.getUserDetails();
+          setUserDetails(details);
+        } catch (error) {
+          console.error('Error fetching user details:', error);
+        }
+      }
+    };
+
+    fetchUserDetails();
+  }, [isAuthenticated]);
+
   return (
     <>
       {/* Mobile overlay */}
@@ -73,19 +94,31 @@ const Sidebar: React.FC<SidebarProps> = ({
             </ul>
           </nav>
           
-          <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-            <div className="flex items-center space-x-3">
-              <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                <span className="text-sm font-semibold">JD</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-medium">John Doe</span>
-                <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  john.doe@example.com
-                </span>
+          {isAuthenticated && userDetails && (
+            <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className="flex items-center space-x-3">
+                {userDetails.photo ? (
+                  <img 
+                    src={userDetails.photo} 
+                    alt={userDetails.displayName} 
+                    className="h-10 w-10 rounded-full"
+                  />
+                ) : (
+                  <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                    <span className="text-sm font-semibold">
+                      {userDetails.displayName?.split(' ').map((n: string) => n[0]).join('')}
+                    </span>
+                  </div>
+                )}
+                <div className="flex flex-col">
+                  <span className="font-medium">{userDetails.displayName}</span>
+                  <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    {userDetails.mail || userDetails.userPrincipalName}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </aside>
     </>
