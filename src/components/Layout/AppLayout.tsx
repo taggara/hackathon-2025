@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Sun, Moon, Settings, Home, Calendar, MessageSquare, List, User } from 'lucide-react';
+import { Menu, X, Sun, Moon, Settings, Home, Calendar } from 'lucide-react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
@@ -17,9 +17,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onNavigate }) => {
 
   const navItems = [
     { icon: <Home size={20} />, label: 'Dashboard', path: '/' },
-    { icon: <List size={20} />, label: 'Tasks', path: '/tasks' },
     { icon: <Calendar size={20} />, label: 'Calendar', path: '/calendar' },
-    { icon: <MessageSquare size={20} />, label: 'Chat', path: '/chat' },
     { icon: <Settings size={20} />, label: 'Settings', path: '/settings' },
   ];
 
