@@ -6,7 +6,14 @@ export const msalConfig: Configuration = {
     authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
     redirectUri: `${window.location.origin}/auth`,
     postLogoutRedirectUri: window.location.origin,
-    navigateToLoginRequestUrl: true
+    navigateToLoginRequestUrl: true,
+    knownAuthorities: ["login.microsoftonline.com"],
+    validatorOptions: {
+      validRedirectUris: [
+        `${window.location.origin}/auth`,
+        /^https:\/\/.*\.d1avkhqscb8f3d\.amplifyapp\.com\/auth$/
+      ]
+    }
   },
   cache: {
     cacheLocation: "sessionStorage",
@@ -21,8 +28,11 @@ export const msalConfig: Configuration = {
 };
 
 export const loginRequest: PopupRequest = {
-  scopes: ["User.Read"],
-  prompt: "select_account"
+  scopes: ["User.Read", "user_impersonation"],
+  prompt: "select_account",
+  extraQueryParameters: {
+    domain_hint: "organizations"
+  }
 };
 
 export const graphConfig = {
