@@ -100,7 +100,7 @@ const ChatbotCard: React.FC = () => {
       <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
         <div>
           <h2 className="font-semibold dark:text-white">AI Assistant</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Powered by Claude-Sonnet 3.5</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Powered by GPT-4</p>
         </div>
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)}
