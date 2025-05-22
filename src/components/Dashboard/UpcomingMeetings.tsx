@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Video, Users, Clock, ChevronUp, ChevronDown, MessageSquareMore, Mail as Google, Slack } from 'lucide-react';
+import { Video, Users, Clock, ChevronUp, ChevronDown, AppWindow as Windows, Mail as Google, Slack } from 'lucide-react';
 import { GraphService } from '../../services/graphService';
 
 const UpcomingMeetings: React.FC = () => {
@@ -25,13 +25,13 @@ const UpcomingMeetings: React.FC = () => {
   const getSourceIcon = (source: string) => {
     switch (source) {
       case 'microsoft':
-        return <Users size={16} style={{ color: '#Can we use hex  or rgb colors for the icons?' }} />;
+        return <Windows size={16} className="text-blue-500" />;
       case 'google':
-        return <Google size={16} style={{ color: '#EA4335' }} />;
+        return <Google size={16} className="text-red-500" />;
       case 'slack':
-        return <Slack size={16} style={{ color: '#4A154B' }} />;
+        return <Slack size={16} className="text-purple-500" />;
       default:
-        return <MessageSquareMore size={16} style={{ color: '#4B53BC' }} />;
+        return <Windows size={16} className="text-blue-500" />;
     }
   };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slack, Mail, Cloud, Video, MessageSquareMore } from 'lucide-react';
+import { Slack, Mail, Cloud, Video, AppWindow as Windows } from 'lucide-react';
 
 interface IntegrationCardProps {
   title: string;
@@ -44,6 +44,7 @@ const IntegrationCard: React.FC<IntegrationCardProps> = ({
 const IntegrationsSettings: React.FC = () => {
   const handleConnect = (service: string) => {
     console.log(`Connecting to ${service}...`);
+    // Demo connection logic would go here
   };
 
   return (
@@ -55,7 +56,7 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Microsoft Teams"
           description="Connect your Microsoft Teams account"
-          icon={<Users size={24} style={{ color: '#4B53BC' }} />}
+          icon={<Windows size={24} className="text-blue-500" />}
           connected={true}
           onClick={() => handleConnect('Microsoft')}
         />
@@ -63,7 +64,7 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Slack"
           description="Connect your Slack workspace"
-          icon={<Slack size={24} style={{ color: '#4A154B' }} />}
+          icon={<Slack size={24} className="text-purple-500" />}
           connected={true}
           onClick={() => handleConnect('Slack')}
         />
@@ -71,7 +72,7 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Google Workspace"
           description="Connect your Google Suite"
-          icon={<Mail size={24} style={{ color: '#EA4335' }} />}
+          icon={<Mail size={24} className="text-red-500" />}
           connected={true}
           onClick={() => handleConnect('Google')}
         />
@@ -79,14 +80,14 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Zoom"
           description="Connect your Zoom account"
-          icon={<Video size={24} style={{ color: '#2D8CFF' }} />}
+          icon={<Video size={24} className="text-blue-500" />}
           onClick={() => handleConnect('Zoom')}
         />
         
         <IntegrationCard
           title="Amazon Workspace"
           description="Connect your Amazon Workspace"
-          icon={<Cloud size={24} style={{ color: '#FF9900' }} />}
+          icon={<Cloud size={24} className="text-yellow-500" />}
           onClick={() => handleConnect('Amazon')}
         />
       </div>
