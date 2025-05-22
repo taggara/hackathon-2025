@@ -11,9 +11,12 @@ console.log('Initializing MSAL application...');
 const msalInstance = new PublicClientApplication(msalConfig);
 
 // Initialize Graph client after MSAL
-GraphService.initializeGraphClient(msalInstance).catch(error => {
-  console.error('Failed to initialize Graph client:', error);
-});
+if (msalInstance.getAllAccounts().length > 0) {
+  console.log('Found existing account, initializing Graph client...');
+  GraphService.initializeGraphClient(msalInstance);
+} else {
+  console.log('No existing accounts found');
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

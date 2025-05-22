@@ -55,10 +55,7 @@ const UpcomingMeetings: React.FC = () => {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold dark:text-white">Today's Meetings</h2>
         <div className="flex items-center space-x-2">
-          <button 
-            onClick={() => window.location.href = '/calendar'}
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors"
-          >
+          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
             View Calendar
           </button>
           <button 
@@ -125,4 +122,4 @@ const UpcomingMeetings: React.FC = () => {
   );
 };
 
-export default UpcomingMeetings
+export default UpcomingMeetings;

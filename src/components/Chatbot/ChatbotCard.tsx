@@ -13,7 +13,7 @@ const ChatbotCard: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      content: "Hello! I'm your AI assistant powered by OpenAI. How can I help you today?",
+      content: "Hello! I'm your AI assistant powered by Claude-Sonnet 3.5. How can I help you today?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -26,8 +26,7 @@ const ChatbotCard: React.FC = () => {
   const handleSendMessage = async () => {
     if (input.trim() === '' || isLoading) return;
     
-    console.log('Sending message:', input);
-    
+    // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
       content: input,
@@ -40,9 +39,6 @@ const ChatbotCard: React.FC = () => {
     setIsLoading(true);
     
     try {
-      console.log('Making API request to AI endpoint...');
-      const startTime = performance.now();
-      
       const response = await fetch('https://dabs2bck.app.n8n.cloud/webhook/69aff619-cd62-487a-ab61-6829ac81b01c', {
         method: 'POST',
         headers: {
@@ -51,31 +47,22 @@ const ChatbotCard: React.FC = () => {
         body: JSON.stringify({ message: input }),
       });
 
-      const endTime = performance.now();
-      console.log(`API request took ${Math.round(endTime - startTime)}ms`);
-
       if (!response.ok) {
-        console.error('API request failed:', {
-          status: response.status,
-          statusText: response.statusText
-        });
         throw new Error('Failed to get response from AI');
       }
 
-      console.log('Received response from AI endpoint');
       const data = await response.json();
-      console.log('Parsed response data:', data);
       
       const aiMessage: Message = {
         id: messages.length + 2,
-        content: data.response.output || data.message || 'I apologize, but I encountered an issue processing your request.',
+        content: data.response || data.message || 'I apologize, but I encountered an issue processing your request.',
         isUser: false,
         timestamp: new Date(),
       };
       
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error('Error in AI communication:', error);
+      console.error('Error getting AI response:', error);
       const errorMessage: Message = {
         id: messages.length + 2,
         content: "I apologize, but I'm having trouble connecting to my backend service. Please try again later.",
@@ -84,7 +71,6 @@ const ChatbotCard: React.FC = () => {
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
-      console.log('AI request completed');
       setIsLoading(false);
     }
   };
@@ -101,11 +87,11 @@ const ChatbotCard: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm flex flex-col">
+    <div className={`bg-white dark:bg-gray-800/50 rounded-xl shadow-sm flex flex-col h-full transition-all`}>
       <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
         <div>
           <h2 className="font-semibold dark:text-white">AI Assistant</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Powered by OpenAI</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Powered by Claude-Sonnet 3.5</p>
         </div>
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -176,7 +162,7 @@ const ChatbotCard: React.FC = () => {
       </div>
       
       {isCollapsed && (
-        <div className="flex-1 flex items-center justify-center p-4">
+        <div className="flex-1 flex items-center justify-center">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
             Chat is minimized. Click the arrow to expand.
           </p>

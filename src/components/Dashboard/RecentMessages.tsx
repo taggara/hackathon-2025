@@ -40,7 +40,7 @@ const RecentMessages: React.FC = () => {
   const unreadCount = messages.filter(msg => msg.isRead === false).length;
 
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all h-full">
+    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
@@ -51,14 +51,9 @@ const RecentMessages: React.FC = () => {
           )}
         </div>
         <div className="flex items-center space-x-2">
-          <a 
-            href="https://outlook.office.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors"
-          >
+          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
             Open Outlook
-          </a>
+          </button>
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -119,6 +114,6 @@ const RecentMessages: React.FC = () => {
       )}
     </div>
   );
-}
+};
 
-export default RecentMessages
+export default RecentMessages;
