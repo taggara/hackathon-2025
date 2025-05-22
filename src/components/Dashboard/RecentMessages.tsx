@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, ChevronUp, ChevronDown, Windows, Mail as Google, Slack } from 'lucide-react';
+import { MessageSquare, ChevronUp, ChevronDown, AppWindow as Windows, Mail as Google, Slack } from 'lucide-react';
 import { GraphService } from '../../services/graphService';
 
 const RecentMessages: React.FC = () => {
