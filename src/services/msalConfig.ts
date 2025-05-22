@@ -48,11 +48,7 @@ export const msalConfig: Configuration = {
 
 export const loginRequest: PopupRequest = {
   scopes: [
-    "User.Read",
-    "Calendars.Read",
-    "Mail.Read",
-    "Tasks.Read",
-    "Presence.Read"
+    "user_impersonation"
   ],
   prompt: "select_account"
 };
