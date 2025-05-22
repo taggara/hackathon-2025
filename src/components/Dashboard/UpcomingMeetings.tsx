@@ -124,3 +124,5 @@ const UpcomingMeetings: React.FC = () => {
     </div>
   );
 };
+
+export default UpcomingMeetings
