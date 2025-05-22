@@ -15,11 +15,11 @@ const DashboardPage: React.FC = () => {
           <UpcomingMeetings />
         </div>
       </div>
-      <div className="lg:col-span-1 space-y-6">
-        <div className="h-[400px]">
+      <div className="lg:col-span-1 flex flex-col space-y-6">
+        <div className="flex-[0.7]">
           <ChatbotCard />
         </div>
-        <div className="h-[300px] overflow-hidden">
+        <div className="flex-[0.3]">
           <RecentMessages />
         </div>
       </div>
