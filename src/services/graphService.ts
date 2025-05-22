@@ -5,38 +5,82 @@ import { loginRequest } from "./msalConfig";
 import { mockCalendarEvents } from './mockData';
 
 export class GraphService {
-  private static client: Client;
+  private static client: Client | null = null;
+  private static initialized = false;
+  private static initializationPromise: Promise<void> | null = null;
 
   static async initializeGraphClient(msalInstance: PublicClientApplication) {
-    console.log('Initializing Graph client...');
-    try {
-      const account = msalInstance.getAllAccounts()[0];
-      console.log('Using account:', {
-        username: account.username,
-        environment: account.environment,
-        tenantId: account.tenantId
-      });
+    if (this.initializationPromise) {
+      return this.initializationPromise;
+    }
 
-      const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(msalInstance, {
-        account,
-        scopes: loginRequest.scopes,
-        interactionType: 'popup'
-      });
+    this.initializationPromise = new Promise(async (resolve, reject) => {
+      try {
+        console.log('Initializing Graph client...');
+        const accounts = msalInstance.getAllAccounts();
+        
+        if (accounts.length === 0) {
+          console.log('No accounts found, skipping Graph client initialization');
+          this.initialized = false;
+          resolve();
+          return;
+        }
 
-      this.client = Client.initWithMiddleware({
-        authProvider
-      });
+        const account = accounts[0];
+        console.log('Using account:', {
+          username: account.username,
+          environment: account.environment,
+          tenantId: account.tenantId
+        });
 
-      console.log('Graph client initialized successfully');
-    } catch (error) {
-      console.error('Failed to initialize Graph client:', error);
-      throw error;
+        const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(msalInstance, {
+          account,
+          scopes: loginRequest.scopes,
+          interactionType: 'popup'
+        });
+
+        this.client = Client.initWithMiddleware({
+          authProvider
+        });
+
+        this.initialized = true;
+        console.log('Graph client initialized successfully');
+        resolve();
+      } catch (error) {
+        console.error('Failed to initialize Graph client:', error);
+        this.initialized = false;
+        reject(error);
+      }
+    });
+
+    return this.initializationPromise;
+  }
+
+  private static async ensureInitialized() {
+    if (!this.initialized && !this.initializationPromise) {
+      throw new Error('Graph client not initialized. Call initializeGraphClient first.');
+    }
+    if (this.initializationPromise) {
+      await this.initializationPromise;
     }
   }
 
   static async getUserDetails() {
-    console.log('Fetching user details from Graph API...');
     try {
+      await this.ensureInitialized();
+      
+      if (!this.client) {
+        console.log('No authenticated user, returning mock data');
+        return {
+          displayName: "Alissa Clark",
+          mail: "alissa.k.clark@gmail.com",
+          jobTitle: "Senior IT Manager",
+          department: "O+O OmniSales Commercial",
+          id: "OAID00084781"
+        };
+      }
+
+      console.log('Fetching user details from Graph API...');
       const user = await this.client
         .api('/me')
         .select('displayName,mail,jobTitle,department,id,userPrincipalName')
@@ -49,8 +93,6 @@ export class GraphService {
       if (error instanceof InteractionRequiredAuthError) {
         throw error;
       }
-      // Fallback to mock data if there's an error
-      console.warn('Falling back to mock user data');
       return {
         displayName: "Alissa Clark",
         mail: "alissa.k.clark@gmail.com",
@@ -62,86 +104,96 @@ export class GraphService {
   }
 
   static async getCalendarEvents() {
-    return mockCalendarEvents;
+    try {
+      await this.ensureInitialized();
+      
+      if (!this.client) {
+        console.log('No authenticated user, returning mock calendar data');
+        return mockCalendarEvents;
+      }
+
+      const events = await this.client
+        .api('/me/calendar/events')
+        .select('subject,start,end,attendees')
+        .get();
+
+      return events.value;
+    } catch (error) {
+      console.error('Error fetching calendar events:', error);
+      return mockCalendarEvents;
+    }
   }
 
   static async getTasks() {
-    // Return mock tasks relevant to the project
-    return [
-      {
-        id: "1",
-        title: "Review API Integration Technical Specs",
-        status: "inProgress",
-        importance: "high",
-        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
-        categories: ["Project"]
-      },
-      {
-        id: "2",
-        title: "Prepare Q2 Integration Roadmap",
-        status: "pending",
-        importance: "high",
-        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
-        categories: ["Work"]
-      },
-      {
-        id: "3",
-        title: "OSF Integration Testing Feedback",
-        status: "completed",
-        importance: "normal",
-        dueDateTime: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
-        categories: ["Project"]
-      },
-      {
-        id: "4",
-        title: "Master Data Schema Validation",
-        status: "inProgress",
-        importance: "high",
-        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
-        categories: ["Project"]
-      },
-      {
-        id: "5",
-        title: "Vendor Sync-up Documentation",
-        status: "pending",
-        importance: "normal",
-        dueDateTime: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
-        categories: ["Work"]
+    try {
+      await this.ensureInitialized();
+      
+      if (!this.client) {
+        return [
+          {
+            id: "1",
+            title: "Review API Integration Technical Specs",
+            status: "inProgress",
+            importance: "high",
+            dueDateTime: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
+            categories: ["Project"]
+          },
+          {
+            id: "2",
+            title: "Prepare Q2 Integration Roadmap",
+            status: "pending",
+            importance: "high",
+            dueDateTime: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
+            categories: ["Work"]
+          }
+        ];
       }
-    ];
+
+      const tasks = await this.client
+        .api('/me/todo/lists/tasks/tasks')
+        .get();
+
+      return tasks.value;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return [];
+    }
   }
 
   static async getRecentEmails() {
-    // Return mock emails relevant to the project
-    return [
-      {
-        id: "1",
-        subject: "RE: API Integration Timeline Update",
-        receivedDateTime: new Date(new Date().setMinutes(new Date().getMinutes() - 30)).toISOString(),
-        from: { emailAddress: { name: "David Kumar", address: "d.kumar@accenture.com" } },
-        isRead: false
-      },
-      {
-        id: "2",
-        subject: "Master Data Integration - Technical Review",
-        receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 2)).toISOString(),
-        from: { emailAddress: { name: "Elena Martinez", address: "e.martinez@osf.digital" } },
-        isRead: true
-      },
-      {
-        id: "3",
-        subject: "Updated: Sales Order Creation Workflow",
-        receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 3)).toISOString(),
-        from: { emailAddress: { name: "Priya Sharma", address: "p.sharma@wipro.com" } },
-        isRead: false
-      },
-      {
-        id: "4",
-        subject: "Sprint Demo Preparation",
-        receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 4)).toISOString(),
-        from: { emailAddress: { name: "Michael Chang", address: "m.chang@salesforce.com" } },
-        isRead: true
+    try {
+      await this.ensureInitialized();
+      
+      if (!this.client) {
+        return [
+          {
+            id: "1",
+            subject: "RE: API Integration Timeline Update",
+            receivedDateTime: new Date(new Date().setMinutes(new Date().getMinutes() - 30)).toISOString(),
+            from: { emailAddress: { name: "David Kumar", address: "d.kumar@accenture.com" } },
+            isRead: false
+          },
+          {
+            id: "2",
+            subject: "Master Data Integration - Technical Review",
+            receivedDateTime: new Date(new Date().setHours(new Date().getHours() - 2)).toISOString(),
+            from: { emailAddress: { name: "Elena Martinez", address: "e.martinez@osf.digital" } },
+            isRead: true
+          }
+        ];
       }
-    ];
+
+      const emails = await this.client
+        .api('/me/messages')
+        .select('subject,receivedDateTime,from,isRead')
+        .top(10)
+        .orderby('receivedDateTime desc')
+        .get();
+
+      return emails.value;
+    } catch (error) {
+      console.error('Error fetching emails:', error);
+      return [];
+    }
   }
 }
