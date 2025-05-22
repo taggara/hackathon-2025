@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, ChevronUp, ChevronDown } from 'lucide-react';
+import { MessageSquare, ChevronUp, ChevronDown, Windows, Mail as Google, Slack } from 'lucide-react';
 import { GraphService } from '../../services/graphService';
 
 const RecentMessages: React.FC = () => {
@@ -22,6 +22,19 @@ const RecentMessages: React.FC = () => {
     fetchMessages();
   }, []);
 
+  const getSourceIcon = (source: string) => {
+    switch (source) {
+      case 'microsoft':
+        return <Windows size={16} className="text-blue-500" />;
+      case 'google':
+        return <Google size={16} className="text-red-500" />;
+      case 'slack':
+        return <Slack size={16} className="text-purple-500" />;
+      default:
+        return <Windows size={16} className="text-blue-500" />;
+    }
+  };
+
   if (loading) {
     return (
       <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
@@ -29,7 +42,7 @@ const RecentMessages: React.FC = () => {
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
         </div>
@@ -37,22 +50,13 @@ const RecentMessages: React.FC = () => {
     );
   }
 
-  const unreadCount = messages.filter(msg => msg.isRead === false).length;
-
   return (
     <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center">
-          <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
-          {unreadCount > 0 && (
-            <div className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-              {unreadCount}
-            </div>
-          )}
-        </div>
+        <h2 className="text-xl font-semibold dark:text-white">Recent Messages</h2>
         <div className="flex items-center space-x-2">
           <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors">
-            Open Outlook
+            View All
           </button>
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -64,39 +68,36 @@ const RecentMessages: React.FC = () => {
       </div>
       
       <div className={`space-y-4 transition-all ${isCollapsed ? 'hidden' : ''}`}>
-        {messages.map(msg => (
+        {messages.map(message => (
           <div 
-            key={msg.id}
-            className={`p-4 rounded-lg transition-colors ${
-              !msg.isRead 
-                ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800' 
-                : 'border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'
-            }`}
+            key={message.id}
+            className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
           >
-            <div className="flex">
-              <div className={`h-10 w-10 rounded-full flex items-center justify-center text-white font-medium ${
-                !msg.isRead ? 'bg-blue-500' : 'bg-gray-500 dark:bg-gray-600'
-              }`}>
-                {msg.from.emailAddress.name.split(' ').map((n: string) => n[0]).join('')}
-              </div>
-              <div className="ml-3 flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-medium dark:text-white">{msg.from.emailAddress.name}</h3>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(msg.receivedDateTime).toLocaleTimeString([], { 
-                      hour: '2-digit', 
-                      minute: '2-digit' 
-                    })}
-                  </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {getSourceIcon(message.source || 'microsoft')}
+                <div>
+                  <h3 className="font-medium dark:text-white">{message.subject}</h3>
+                  <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <span>{message.from.emailAddress.name}</span>
+                    <span className="mx-2">•</span>
+                    <span>
+                      {new Date(message.receivedDateTime).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{msg.subject}</p>
               </div>
-            </div>
-            <div className="mt-3 flex justify-end">
-              <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium flex items-center transition-colors">
-                <MessageSquare size={14} className="mr-1" />
-                Reply
-              </button>
+              <div className="flex items-center space-x-2">
+                {!message.isRead && (
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                )}
+                <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md text-gray-500 dark:text-gray-400 transition-colors">
+                  <MessageSquare size={16} />
+                </button>
+              </div>
             </div>
           </div>
         ))}
