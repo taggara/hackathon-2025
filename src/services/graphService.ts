@@ -109,18 +109,20 @@ export class GraphService {
       
       if (!this.client) {
         console.log('No authenticated user, returning mock calendar data');
-        return mockCalendarEvents;
+        // Only return the first 5 events
+        return mockCalendarEvents.slice(0, 5);
       }
 
       const events = await this.client
         .api('/me/calendar/events')
         .select('subject,start,end,attendees')
+        .top(5)
         .get();
 
       return events.value;
     } catch (error) {
       console.error('Error fetching calendar events:', error);
-      return mockCalendarEvents;
+      return mockCalendarEvents.slice(0, 5);
     }
   }
 
@@ -145,12 +147,37 @@ export class GraphService {
             importance: "high",
             dueDateTime: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
             categories: ["Work"]
+          },
+          {
+            id: "3",
+            title: "Update Data Migration Strategy",
+            status: "completed",
+            importance: "normal",
+            dueDateTime: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
+            categories: ["Project"]
+          },
+          {
+            id: "4",
+            title: "Client Presentation Review",
+            status: "inProgress",
+            importance: "high",
+            dueDateTime: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
+            categories: ["Meeting"]
+          },
+          {
+            id: "5",
+            title: "Team Performance Evaluations",
+            status: "pending",
+            importance: "normal",
+            dueDateTime: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString(),
+            categories: ["Work"]
           }
         ];
       }
 
       const tasks = await this.client
         .api('/me/todo/lists/tasks/tasks')
+        .top(5)
         .get();
 
       return tasks.value;
@@ -186,7 +213,7 @@ export class GraphService {
       const emails = await this.client
         .api('/me/messages')
         .select('subject,receivedDateTime,from,isRead')
-        .top(10)
+        .top(5)
         .orderby('receivedDateTime desc')
         .get();
 
