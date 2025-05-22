@@ -46,18 +46,20 @@ export const msalConfig: Configuration = {
   }
 };
 
-// Add here scopes for id token to be used at MS Identity Platform endpoints.
 export const loginRequest: PopupRequest = {
   scopes: [
-    "user_impersonation"
+    "User.Read",
+    "Calendars.Read",
+    "Mail.Read",
+    "Tasks.Read",
+    "Presence.Read"
   ],
   prompt: "select_account"
 };
 
-// Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {
   graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
   graphMailEndpoint: "https://graph.microsoft.com/v1.0/me/messages",
   graphEventsEndpoint: "https://graph.microsoft.com/v1.0/me/events",
-  graphChatsEndpoint: "https://graph.microsoft.com/v1.0/me/chats"
+  graphTasksEndpoint: "https://graph.microsoft.com/v1.0/me/todo/lists/tasks/tasks"
 };
