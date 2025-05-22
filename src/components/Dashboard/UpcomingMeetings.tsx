@@ -25,7 +25,7 @@ const UpcomingMeetings: React.FC = () => {
   const getSourceIcon = (source: string) => {
     switch (source) {
       case 'microsoft':
-        return <MessageSquareMore size={16} className="text-blue-500" />;
+        return <Users size={16} className="text-blue-500" />;
       case 'google':
         return <Google size={16} className="text-red-500" />;
       case 'slack':
