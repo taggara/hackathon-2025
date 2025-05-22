@@ -120,3 +120,5 @@ const RecentMessages: React.FC = () => {
     </div>
   );
 }
+
+export default RecentMessages
