@@ -82,7 +82,7 @@ export class GraphService {
         status: "pending",
         importance: "high",
         dueDateTime: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
-        categories: ["Work"]
+        categories: ["Support"]
       },
       {
         id: "3",
@@ -106,7 +106,7 @@ export class GraphService {
         status: "pending",
         importance: "normal",
         dueDateTime: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
-        categories: ["Work"]
+        categories: ["Support"]
       }
     ];
   }
