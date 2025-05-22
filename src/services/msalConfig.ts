@@ -1,10 +1,11 @@
 import { Configuration, PopupRequest } from "@azure/msal-browser";
 
+// MSAL configuration object
 export const msalConfig: Configuration = {
   auth: {
-    clientId: import.meta.env.VITE_MICROSOFT_CLIENT_ID ?? "",
-    authority: "https://login.microsoftonline.com/common",
-    redirectUri: window.location.origin,
+    clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
+    authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
+    redirectUri: `${window.location.origin}/auth`,
     postLogoutRedirectUri: window.location.origin,
     navigateToLoginRequestUrl: true
   },
@@ -13,6 +14,10 @@ export const msalConfig: Configuration = {
     storeAuthStateInCookie: false
   },
   system: {
+    allowNativeBroker: false,
+    windowHashTimeout: 60000,
+    iframeHashTimeout: 6000,
+    loadFrameTimeout: 0,
     loggerOptions: {
       loggerCallback: (level, message, containsPii) => {
         if (containsPii) {
@@ -43,12 +48,7 @@ export const msalConfig: Configuration = {
 
 export const loginRequest: PopupRequest = {
   scopes: [
-    "User.Read",
-    "Calendars.Read",
-    "Mail.Read",
-    "Tasks.Read",
-    "Tasks.ReadWrite",
-    "Tasks.ReadWrite.Shared"
+    "user_impersonation"
   ],
   prompt: "select_account"
 };
@@ -57,5 +57,5 @@ export const graphConfig = {
   graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
   graphMailEndpoint: "https://graph.microsoft.com/v1.0/me/messages",
   graphEventsEndpoint: "https://graph.microsoft.com/v1.0/me/events",
-  graphTasksEndpoint: "https://graph.microsoft.com/v1.0/me/todo/lists"
+  graphTasksEndpoint: "https://graph.microsoft.com/v1.0/me/todo/lists/tasks/tasks"
 };

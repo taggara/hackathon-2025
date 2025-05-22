@@ -10,10 +10,6 @@ export class GraphService {
     console.log('Initializing Graph client...');
     try {
       const account = msalInstance.getAllAccounts()[0];
-      if (!account) {
-        throw new Error('No account found');
-      }
-
       console.log('Using account:', {
         username: account.username,
         environment: account.environment,
@@ -32,13 +28,7 @@ export class GraphService {
 
       console.log('Graph client initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize Graph client:', {
-        error: error instanceof Error ? {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        } : error
-      });
+      console.error('Failed to initialize Graph client:', error);
       throw error;
     }
   }
@@ -55,20 +45,10 @@ export class GraphService {
       return user;
     } catch (error) {
       if (error instanceof InteractionRequiredAuthError) {
-        console.error('Authentication required:', {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        });
+        console.error('Authentication required:', error);
         throw error;
       }
-      console.error('Error getting user details:', {
-        error: error instanceof Error ? {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        } : error
-      });
+      console.error('Error getting user details:', error);
       throw error;
     }
   }
@@ -80,19 +60,12 @@ export class GraphService {
         .api('/me/calendar/events')
         .select('subject,start,end,attendees')
         .orderby('start/dateTime')
-        .filter("start/dateTime ge '" + new Date().toISOString() + "'")
         .top(10)
         .get();
       console.log(`Retrieved ${events.value.length} calendar events`);
       return events.value;
     } catch (error) {
-      console.error('Error getting calendar events:', {
-        error: error instanceof Error ? {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        } : error
-      });
+      console.error('Error getting calendar events:', error);
       throw error;
     }
   }
@@ -110,7 +83,6 @@ export class GraphService {
         console.log('Using default task list:', defaultList.displayName);
         const tasksInList = await this.client
           .api(`/me/todo/lists/${defaultList.id}/tasks`)
-          .select('id,title,status,importance,dueDateTime,categories')
           .get();
         console.log(`Retrieved ${tasksInList.value.length} tasks`);
         return tasksInList.value;
@@ -118,13 +90,7 @@ export class GraphService {
       console.log('No task lists found');
       return [];
     } catch (error) {
-      console.error('Error getting tasks:', {
-        error: error instanceof Error ? {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        } : error
-      });
+      console.error('Error getting tasks:', error);
       throw error;
     }
   }
@@ -141,13 +107,7 @@ export class GraphService {
       console.log(`Retrieved ${messages.value.length} recent emails`);
       return messages.value;
     } catch (error) {
-      console.error('Error getting emails:', {
-        error: error instanceof Error ? {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        } : error
-      });
+      console.error('Error getting emails:', error);
       throw error;
     }
   }
