@@ -66,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       <aside 
         className={`fixed md:static inset-y-0 left-0 z-30 w-64 transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-          ${darkMode ? 'bg-gray-800/50 text-white' : 'bg-white text-gray-800'} shadow-lg md:shadow-none`}
+          ${darkMode ? 'bg-gray-800/50 text-white' : 'bg-gray-700/50 text-white'} shadow-lg md:shadow-none`}
       >
         <div className="h-full flex flex-col">
           <div className="h-16 flex items-center justify-between px-4 md:hidden">
@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <button
               onClick={toggleSidebar}
               className={`p-2 rounded-full hover:bg-opacity-10 transition-colors
-                ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-100'}`}
+                ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-600'}`}
               aria-label="Close sidebar"
             >
               <X size={20} />
@@ -91,10 +91,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                       ${item.path === activePath
                         ? darkMode 
                           ? 'bg-gray-700/50 text-white' 
-                          : 'bg-blue-50 text-blue-600' 
+                          : 'bg-gray-600/50 text-white' 
                         : darkMode 
                           ? 'text-gray-300 hover:bg-gray-700/50' 
-                          : 'text-gray-700 hover:bg-gray-100'
+                          : 'text-gray-300 hover:bg-gray-600/50'
                       }`}
                   >
                     {item.icon}
@@ -106,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           </nav>
           
           {isAuthenticated && userDetails && (
-            <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+            <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-600'}`}>
               <div className="flex items-center space-x-3">
                 {userDetails.photo ? (
                   <img 
@@ -122,8 +122,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                 )}
                 <div className="flex flex-col">
-                  <span className="font-medium">{userDetails.displayName}</span>
-                  <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <span className="font-medium text-white">{userDetails.displayName}</span>
+                  <span className="text-sm text-gray-400">
                     {userDetails.mail || userDetails.userPrincipalName}
                   </span>
                 </div>
