@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slack, Mail, Cloud } from 'lucide-react';
+import { Slack, Mail, Cloud, Video, Windows } from 'lucide-react';
 
 interface IntegrationCardProps {
   title: string;
@@ -49,13 +49,23 @@ const IntegrationsSettings: React.FC = () => {
 
   return (
     <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
-      <h2 className="text-xl font-semibold mb-6 dark:text-white">Integrations</h2>
+      <h2 className="text-xl font-semibold mb-2 dark:text-white">Integrations</h2>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Priortai works best with multiple connections.</p>
       
       <div className="space-y-4">
         <IntegrationCard
+          title="Microsoft Teams"
+          description="Connect your Microsoft Teams account"
+          icon={<Windows size={24} className="text-blue-500" />}
+          connected={true}
+          onClick={() => handleConnect('Microsoft')}
+        />
+        
+        <IntegrationCard
           title="Slack"
-          description="Connect your Slack Instance"
-          icon={<Slack size={24} className="text-blue-500" />}
+          description="Connect your Slack workspace"
+          icon={<Slack size={24} className="text-purple-500" />}
+          connected={true}
           onClick={() => handleConnect('Slack')}
         />
         
@@ -63,7 +73,15 @@ const IntegrationsSettings: React.FC = () => {
           title="Google Workspace"
           description="Connect your Google Suite"
           icon={<Mail size={24} className="text-red-500" />}
+          connected={true}
           onClick={() => handleConnect('Google')}
+        />
+        
+        <IntegrationCard
+          title="Zoom"
+          description="Connect your Zoom account"
+          icon={<Video size={24} className="text-blue-500" />}
+          onClick={() => handleConnect('Zoom')}
         />
         
         <IntegrationCard
