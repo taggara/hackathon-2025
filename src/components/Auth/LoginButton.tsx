@@ -2,6 +2,7 @@ import React from 'react';
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../services/msalConfig";
 import { LogIn } from 'lucide-react';
+import { GraphService } from '../../services/graphService';
 
 const LoginButton: React.FC = () => {
   const { instance } = useMsal();
@@ -17,6 +18,7 @@ const LoginButton: React.FC = () => {
       // Try silent token acquisition first
       const silentResult = await instance.ssoSilent(loginRequest);
       console.log('Silent login successful');
+      await GraphService.initializeGraphClient(instance);
       return silentResult;
     } catch (error) {
       console.log('Silent login failed, attempting popup login');
@@ -34,6 +36,9 @@ const LoginButton: React.FC = () => {
           },
           scopes: response.scopes
         });
+
+        // Initialize Graph client after successful login
+        await GraphService.initializeGraphClient(instance);
       } catch (error) {
         console.error('Login failed:', error);
         if (error instanceof Error) {
