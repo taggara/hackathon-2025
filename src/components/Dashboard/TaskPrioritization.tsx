@@ -1,49 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Clock, BarChart2, CheckCircle, AlertCircle } from 'lucide-react';
-
-const priorityTasks = [
-  {
-    id: 1,
-    title: 'Quarterly Report Review',
-    dueDate: 'Today, 5:00 PM',
-    priority: 'High',
-    category: 'Work',
-    status: 'In Progress',
-  },
-  {
-    id: 2,
-    title: 'Team Sync Meeting',
-    dueDate: 'Tomorrow, 10:00 AM',
-    priority: 'Medium',
-    category: 'Meeting',
-    status: 'Scheduled',
-  },
-  {
-    id: 3,
-    title: 'Update Project Timeline',
-    dueDate: 'Today, 3:00 PM',
-    priority: 'High',
-    category: 'Project',
-    status: 'Not Started',
-  },
-  {
-    id: 4,
-    title: 'Client Presentation',
-    dueDate: 'Friday, 2:00 PM',
-    priority: 'Medium',
-    category: 'Meeting',
-    status: 'Not Started',
-  },
-];
+import { GraphService } from '../../services/graphService';
 
 const TaskPrioritization: React.FC = () => {
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'High':
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const tasksData = await GraphService.getTasks();
+        setTasks(tasksData);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  const getPriorityColor = (importance: string) => {
+    switch (importance) {
+      case 'high':
         return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      case 'Medium':
+      case 'normal':
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      case 'Low':
+      case 'low':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
       default:
         return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
@@ -63,6 +47,21 @@ const TaskPrioritization: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
+        <div className="animate-pulse space-y-4">
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all">
       <div className="flex items-center justify-between mb-6">
@@ -78,7 +77,7 @@ const TaskPrioritization: React.FC = () => {
       </div>
       
       <div className="space-y-4">
-        {priorityTasks.map(task => (
+        {tasks.map(task => (
           <div 
             key={task.id}
             className="p-4 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -86,11 +85,9 @@ const TaskPrioritization: React.FC = () => {
             <div className="flex items-start justify-between">
               <div className="flex items-start space-x-3">
                 <div className="mt-0.5">
-                  {task.status === 'In Progress' ? (
+                  {task.status === 'inProgress' ? (
                     <Clock size={18} className="text-blue-500" />
-                  ) : task.status === 'Scheduled' ? (
-                    <BarChart2 size={18} className="text-purple-500" />
-                  ) : task.status === 'Completed' ? (
+                  ) : task.status === 'completed' ? (
                     <CheckCircle size={18} className="text-green-500" />
                   ) : (
                     <AlertCircle size={18} className="text-amber-500" />
@@ -99,21 +96,26 @@ const TaskPrioritization: React.FC = () => {
                 <div>
                   <h3 className="font-medium dark:text-white">{task.title}</h3>
                   <div className="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    <span>{task.dueDate}</span>
+                    <span>{task.dueDateTime ? new Date(task.dueDateTime).toLocaleDateString() : 'No due date'}</span>
                   </div>
                 </div>
               </div>
               <div className="flex space-x-2">
-                <span className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(task.category)}`}>
-                  {task.category}
+                <span className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(task.categories?.[0] || 'Other')}`}>
+                  {task.categories?.[0] || 'Other'}
                 </span>
-                <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(task.priority)}`}>
-                  {task.priority}
+                <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(task.importance)}`}>
+                  {task.importance.charAt(0).toUpperCase() + task.importance.slice(1)}
                 </span>
               </div>
             </div>
           </div>
         ))}
+        {tasks.length === 0 && (
+          <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+            No tasks found
+          </div>
+        )}
       </div>
     </div>
   );
