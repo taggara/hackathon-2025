@@ -14,24 +14,35 @@ const LoginButton: React.FC = () => {
         prompt: loginRequest.prompt
       });
       
-      const response = await instance.loginPopup(loginRequest);
-      console.log('Login successful:', {
-        account: {
-          username: response.account.username,
-          environment: response.account.environment,
-          tenantId: response.account.tenantId,
-        },
-        scopes: response.scopes,
-        idTokenClaims: response.idTokenClaims
-      });
+      // Try silent token acquisition first
+      const silentResult = await instance.ssoSilent(loginRequest);
+      console.log('Silent login successful');
+      return silentResult;
     } catch (error) {
-      console.error('Login failed:', error);
-      if (error instanceof Error) {
-        console.error('Error details:', {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
+      console.log('Silent login failed, attempting popup login');
+      try {
+        const response = await instance.loginPopup({
+          ...loginRequest,
+          redirectUri: window.location.origin
         });
+        
+        console.log('Popup login successful:', {
+          account: {
+            username: response.account.username,
+            environment: response.account.environment,
+            tenantId: response.account.tenantId,
+          },
+          scopes: response.scopes
+        });
+      } catch (error) {
+        console.error('Login failed:', error);
+        if (error instanceof Error) {
+          console.error('Error details:', {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+          });
+        }
       }
     }
   };

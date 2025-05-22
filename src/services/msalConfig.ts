@@ -4,12 +4,12 @@ export const msalConfig: Configuration = {
   auth: {
     clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
     authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
-    redirectUri: `${window.location.origin}/auth`,
+    redirectUri: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
     navigateToLoginRequestUrl: true
   },
   cache: {
-    cacheLocation: "sessionStorage",
+    cacheLocation: "localStorage",
     storeAuthStateInCookie: false
   },
   system: {
@@ -47,7 +47,10 @@ export const msalConfig: Configuration = {
 
 export const loginRequest: PopupRequest = {
   scopes: [
-    ".default"
+    "User.Read",
+    "Calendars.Read",
+    "Mail.Read",
+    "Tasks.Read"
   ],
   prompt: "select_account"
 };
