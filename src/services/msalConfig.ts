@@ -2,9 +2,9 @@ import { Configuration, PopupRequest } from "@azure/msal-browser";
 
 export const msalConfig: Configuration = {
   auth: {
-    clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
-    authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
-    redirectUri: `${window.location.origin}/auth`,
+    clientId: import.meta.env.VITE_MICROSOFT_CLIENT_ID ?? "",
+    authority: "https://login.microsoftonline.com/common",
+    redirectUri: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
     navigateToLoginRequestUrl: true
   },
@@ -13,10 +13,6 @@ export const msalConfig: Configuration = {
     storeAuthStateInCookie: false
   },
   system: {
-    allowNativeBroker: false,
-    windowHashTimeout: 60000,
-    iframeHashTimeout: 6000,
-    loadFrameTimeout: 0,
     loggerOptions: {
       loggerCallback: (level, message, containsPii) => {
         if (containsPii) {
