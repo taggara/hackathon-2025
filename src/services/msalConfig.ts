@@ -1,6 +1,5 @@
 import { Configuration, PopupRequest } from "@azure/msal-browser";
 
-// MSAL configuration object
 export const msalConfig: Configuration = {
   auth: {
     clientId: import.meta.env.VITE_AZURE_CLIENT_ID ?? "",
@@ -48,7 +47,11 @@ export const msalConfig: Configuration = {
 
 export const loginRequest: PopupRequest = {
   scopes: [
-    "user_impersonation"
+    "User.Read",
+    "Calendars.Read",
+    "Mail.Read",
+    "Tasks.Read",
+    "Tasks.ReadWrite"
   ],
   prompt: "select_account"
 };
