@@ -81,13 +81,13 @@ const CalendarPage: React.FC = () => {
         const googleEvents: CalendarEvent[] = [
           {
             id: 'g1',
-            title: 'Product Review',
-            start: new Date(new Date().setHours(14, 0)),
-            end: new Date(new Date().setHours(15, 0)),
+            title: 'Internal OneSFA - NEO Mapping + Open Points Alignment',
+            start: new Date(new Date().setHours(10, 0)),
+            end: new Date(new Date().setHours(11, 0)),
             source: 'google',
             attendees: [
-              { name: 'John Doe', email: 'john@example.com' },
-              { name: 'Jane Smith', email: 'jane@example.com' }
+              { name: 'Rodrigues, Vania Leticia', email: 'vania.l.rodrigues@accenture.com' },
+              { name: 'Denadai, Luis Gustavo Boteon', email: 'luis.denadai@accenture.com' }
             ],
             isVideoCall: true,
           }
@@ -97,10 +97,13 @@ const CalendarPage: React.FC = () => {
         const slackEvents: CalendarEvent[] = [
           {
             id: 's1',
-            title: 'Team Standup',
-            start: new Date(new Date().setHours(10, 0)),
-            end: new Date(new Date().setHours(10, 30)),
+            title: 'Alissa / David: Touchbase',
+            start: new Date(new Date().setHours(13, 0)),
+            end: new Date(new Date().setHours(14, 30)),
             source: 'slack',
+            attendees: [
+              { name: 'DABOUE David', email: 'David.Daboue@loreal.com' },
+            ],
             isVideoCall: true,
             link: 'https://slack.com/call/123'
           }
