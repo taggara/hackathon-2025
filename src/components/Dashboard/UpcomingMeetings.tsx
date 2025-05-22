@@ -25,13 +25,13 @@ const UpcomingMeetings: React.FC = () => {
   const getSourceIcon = (source: string) => {
     switch (source) {
       case 'microsoft':
-        return <Users size={16} className="text-blue-500" />;
+        return <MessageSquareMore size={16} style={{ color: '#4B53BC' }} />;
       case 'google':
-        return <Google size={16} className="text-red-500" />;
+        return <Google size={16} style={{ color: '#EA4335' }} />;
       case 'slack':
-        return <Slack size={16} className="text-purple-500" />;
+        return <Slack size={16} style={{ color: '#4A154B' }} />;
       default:
-        return <MessageSquareMore size={16} className="text-blue-500" />;
+        return <MessageSquareMore size={16} style={{ color: '#4B53BC' }} />;
     }
   };
 
