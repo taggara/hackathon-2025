@@ -16,23 +16,23 @@ const IntegrationCard: React.FC<IntegrationCardProps> = ({
   connected = false,
   onClick 
 }) => (
-  <div className="p-4 border dark:border-gray-700 rounded-lg">
+  <div className="p-4 border border-gray-600 dark:border-gray-700 rounded-lg">
     <div className="flex items-start justify-between">
       <div className="flex items-center space-x-3">
-        <div className="p-2 bg-gray-100 dark:bg-gray-700/50 rounded-lg">
+        <div className="p-2 bg-gray-600 dark:bg-gray-700/50 rounded-lg">
           {icon}
         </div>
         <div>
-          <h3 className="font-medium dark:text-white">{title}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
+          <h3 className="font-medium text-white">{title}</h3>
+          <p className="text-sm text-gray-300 dark:text-gray-400 mt-1">{description}</p>
         </div>
       </div>
       <button
         onClick={onClick}
         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
           connected
-            ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-            : 'bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30'
+            ? 'bg-green-900/20 text-green-400 dark:bg-green-900/20 dark:text-green-400'
+            : 'bg-blue-900/20 text-blue-400 hover:bg-blue-900/30 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30'
         }`}
       >
         {connected ? 'Connected' : 'Connect'}
@@ -48,15 +48,15 @@ const IntegrationsSettings: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
-      <h2 className="text-xl font-semibold mb-2 dark:text-white">Integrations</h2>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">AI Alchemist works best with multiple connections.</p>
+    <div className="bg-gray-700 dark:bg-gray-800/50 rounded-xl shadow-sm p-6">
+      <h2 className="text-xl font-semibold mb-2 text-white">Integrations</h2>
+      <p className="text-sm text-gray-300 dark:text-gray-400 mb-6">AI Alchemist works best with multiple connections.</p>
       
       <div className="space-y-4">
         <IntegrationCard
           title="Microsoft Teams"
           description="Connect your Microsoft Teams account"
-          icon={<Windows size={24} className="text-blue-500" />}
+          icon={<Windows size={24} className="text-blue-400" />}
           connected={true}
           onClick={() => handleConnect('Microsoft')}
         />
@@ -64,7 +64,7 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Slack"
           description="Connect your Slack workspace"
-          icon={<Slack size={24} className="text-purple-500" />}
+          icon={<Slack size={24} className="text-purple-400" />}
           connected={true}
           onClick={() => handleConnect('Slack')}
         />
@@ -72,7 +72,7 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Google Workspace"
           description="Connect your Google Suite"
-          icon={<Mail size={24} className="text-red-500" />}
+          icon={<Mail size={24} className="text-red-400" />}
           connected={true}
           onClick={() => handleConnect('Google')}
         />
@@ -80,14 +80,14 @@ const IntegrationsSettings: React.FC = () => {
         <IntegrationCard
           title="Zoom"
           description="Connect your Zoom account"
-          icon={<Video size={24} className="text-blue-500" />}
+          icon={<Video size={24} className="text-blue-400" />}
           onClick={() => handleConnect('Zoom')}
         />
         
         <IntegrationCard
           title="Amazon Workspace"
           description="Connect your Amazon Workspace"
-          icon={<Cloud size={24} className="text-yellow-500" />}
+          icon={<Cloud size={24} className="text-yellow-400" />}
           onClick={() => handleConnect('Amazon')}
         />
       </div>
