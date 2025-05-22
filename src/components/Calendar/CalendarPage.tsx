@@ -59,6 +59,7 @@ const CalendarPage: React.FC = () => {
   React.useEffect(() => {
     const fetchEvents = async () => {
       try {
+        setLoading(true);
         // Microsoft Calendar events
         const msEvents = await GraphService.getCalendarEvents();
         
@@ -73,43 +74,10 @@ const CalendarPage: React.FC = () => {
             name: a.emailAddress.name,
             email: a.emailAddress.address
           })),
-          isVideoCall: event.subject.toLowerCase().includes('teams') || 
-                      event.subject.toLowerCase().includes('zoom'),
+          isVideoCall: event.isVideoCall,
         }));
 
-        // Mock Google Calendar events
-        const googleEvents: CalendarEvent[] = [
-          {
-            id: 'g1',
-            title: 'Internal OneSFA - NEO Mapping + Open Points Alignment',
-            start: new Date(new Date().setHours(10, 0)),
-            end: new Date(new Date().setHours(11, 0)),
-            source: 'google',
-            attendees: [
-              { name: 'Rodrigues, Vania Leticia', email: 'vania.l.rodrigues@accenture.com' },
-              { name: 'Denadai, Luis Gustavo Boteon', email: 'luis.denadai@accenture.com' }
-            ],
-            isVideoCall: true,
-          }
-        ];
-
-        // Mock Slack events
-        const slackEvents: CalendarEvent[] = [
-          {
-            id: 's1',
-            title: 'Alissa / David: Touchbase',
-            start: new Date(new Date().setHours(13, 0)),
-            end: new Date(new Date().setHours(14, 30)),
-            source: 'slack',
-            attendees: [
-              { name: 'DABOUE David', email: 'David.Daboue@loreal.com' },
-            ],
-            isVideoCall: true,
-            link: 'https://slack.com/call/123'
-          }
-        ];
-
-        setEvents([...transformedEvents, ...googleEvents, ...slackEvents]);
+        setEvents(transformedEvents);
       } catch (error) {
         console.error('Error fetching calendar events:', error);
       } finally {
@@ -118,7 +86,7 @@ const CalendarPage: React.FC = () => {
     };
 
     fetchEvents();
-  }, []);
+  }, [selectedDate]); // Only re-fetch when selected date changes
 
   const getSourceIcon = (source: string) => {
     switch (source) {
@@ -227,7 +195,10 @@ const CalendarPage: React.FC = () => {
 
               {/* Events */}
               {events
-                .filter(event => event.start.toDateString() === day.toDateString())
+                .filter(event => {
+                  const eventDate = new Date(event.start);
+                  return eventDate.toDateString() === day.toDateString();
+                })
                 .map(event => {
                   const { top, height } = getEventPosition(event);
                   return (
