@@ -14,18 +14,20 @@ interface SidebarProps {
   toggleSidebar: () => void;
   navItems: NavItem[];
   darkMode: boolean;
+  onNavigate: (path: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
   isOpen, 
   toggleSidebar,
   navItems,
-  darkMode 
+  darkMode,
+  onNavigate
 }) => {
   const { accounts } = useMsal();
   const [userDetails, setUserDetails] = useState<any>(null);
-  const isAuthenticated = accounts.length > 0;
   const [activePath, setActivePath] = useState('/');
+  const isAuthenticated = accounts.length > 0;
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -44,6 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const handleNavigation = (path: string) => {
     setActivePath(path);
+    onNavigate(path);
     if (window.innerWidth < 768) {
       toggleSidebar();
     }

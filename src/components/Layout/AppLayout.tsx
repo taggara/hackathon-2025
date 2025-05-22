@@ -5,9 +5,10 @@ import Header from './Header';
 
 interface AppLayoutProps {
   children: React.ReactNode;
+  onNavigate: (path: string) => void;
 }
 
-const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+const AppLayout: React.FC<AppLayoutProps> = ({ children, onNavigate }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
@@ -35,7 +36,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           isOpen={sidebarOpen} 
           toggleSidebar={toggleSidebar} 
           navItems={navItems} 
-          darkMode={darkMode} 
+          darkMode={darkMode}
+          onNavigate={onNavigate}
         />
         <main className={`flex-1 overflow-y-auto transition-all duration-300 p-6 
           ${darkMode ? 'bg-gray-800 text-gray-100' : 'bg-gray-100 text-gray-800'}`}>
