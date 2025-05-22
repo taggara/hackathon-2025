@@ -20,10 +20,11 @@ const ChatbotCard: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSendMessage = () => {
-    if (input.trim() === '') return;
+  const handleSendMessage = async () => {
+    if (input.trim() === '' || isLoading) return;
     
     // Add user message
     const userMessage: Message = {
@@ -35,27 +36,43 @@ const ChatbotCard: React.FC = () => {
     
     setMessages(prev => [...prev, userMessage]);
     setInput('');
+    setIsLoading(true);
     
-    // Simulate AI response after a short delay
-    setTimeout(() => {
-      const aiResponses = [
-        "I can help with that! Let me look into it for you.",
-        "Based on your tasks and calendar, I recommend prioritizing the quarterly report due today.",
-        "Would you like me to help you prepare for your upcoming client meeting?",
-        "I've analyzed your schedule and noticed you might be overbooked tomorrow. Would you like me to suggest which meetings could be rescheduled?",
-      ];
-      
-      const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+    try {
+      const response = await fetch('https://dabs2bck.app.n8n.cloud/webhook/69aff619-cd62-487a-ab61-6829ac81b01c', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: input }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from AI');
+      }
+
+      const data = await response.json();
       
       const aiMessage: Message = {
         id: messages.length + 2,
-        content: randomResponse,
+        content: data.response || data.message || 'I apologize, but I encountered an issue processing your request.',
         isUser: false,
         timestamp: new Date(),
       };
       
       setMessages(prev => [...prev, aiMessage]);
-    }, 1000);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorMessage: Message = {
+        id: messages.length + 2,
+        content: "I apologize, but I'm having trouble connecting to my backend service. Please try again later.",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -93,6 +110,17 @@ const ChatbotCard: React.FC = () => {
             timestamp={message.timestamp}
           />
         ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-gray-100 dark:bg-gray-700 rounded-2xl px-4 py-2 text-gray-500 dark:text-gray-400">
+              <div className="flex space-x-2">
+                <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
+            </div>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
       
@@ -113,6 +141,7 @@ const ChatbotCard: React.FC = () => {
               className="w-full border dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none
                 dark:bg-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               rows={1}
+              disabled={isLoading}
             />
           </div>
           <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
@@ -120,9 +149,9 @@ const ChatbotCard: React.FC = () => {
           </button>
           <button
             onClick={handleSendMessage}
-            disabled={input.trim() === ''}
+            disabled={input.trim() === '' || isLoading}
             className={`p-2 rounded-full transition-colors ${
-              input.trim() === '' 
+              input.trim() === '' || isLoading
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500' 
                 : 'bg-blue-500 text-white hover:bg-blue-600'
             }`}
